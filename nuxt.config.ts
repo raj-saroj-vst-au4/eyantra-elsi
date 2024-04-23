@@ -40,13 +40,13 @@ export default defineNuxtConfig({
         baseUrl: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL as string,
         clientId: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID as string,
         clientSecret: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_SECRET as string,
-        redirectUri: "http://localhost:3000/auth/keycloak/callback",
+        redirectUri: process.env.NUXT_APP_DOMAIN + "/auth/keycloak/callback",
         exposeAccessToken: true,
       },
     },
     middleware: {
       globalMiddlewareEnabled: true,
-      customLoginPage: false,
+      customLoginPage: true,
     },
   },
 
