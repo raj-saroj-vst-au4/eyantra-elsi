@@ -1,10 +1,14 @@
 <template>
-  <aside class="h-screen w-[300px] border-r bg-white">
+  <aside class="h-screen w-[300px] border-r bg-gray-800">
     <UiScrollArea class="size-full">
       <div class="flex h-screen flex-col pt-7">
         <NuxtLink to="#" class="flex w-full items-center gap-3 px-5">
-          <UiAvatar src="/icon.png" alt="Company Logo" class="size-7 rounded object-contain" />
-          <span class="text-xl font-bold">E-Yantra</span>
+          <UiAvatar
+            src="/images/eyantralogo.svg"
+            alt="E-yantra"
+            class="size-7 rounded object-contain"
+          />
+          <span class="text-xl font-bold dark:text-white">E-Yantra</span>
         </NuxtLink>
         <div class="my-6 px-5">
           <UiVeeInput v-model="search" placeholder="Search..." icon="lucide:search" />
@@ -21,7 +25,7 @@
                   class="justify-start gap-4 px-3"
                 >
                   <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                  <span>{{ n.title }}</span>
+                  <span class="dark:text-white">{{ n.title }}</span>
                 </UiButton>
                 <UiCollapsible v-if="n.items">
                   <UiCollapsibleTrigger as-child>
@@ -31,7 +35,7 @@
                       class="group w-full justify-start gap-4 px-3"
                     >
                       <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                      <span>{{ n.title }}</span>
+                      <span class="dark:text-white">{{ n.title }}</span>
                       <Icon
                         name="lucide:chevron-down"
                         class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180"
@@ -46,7 +50,7 @@
                         variant="ghost"
                         class="justify-start gap-4 px-3"
                       >
-                        <span>{{ item.title }}</span>
+                        <span class="dark:text-white">{{ item.title }}</span>
                       </UiButton>
                     </template>
                   </UiCollapsibleContent>
@@ -63,7 +67,7 @@
                   class="justify-start gap-4 px-3"
                 >
                   <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                  <span>{{ n.title }}</span>
+                  <span class="dark:text-white">{{ n.title }}</span>
                 </UiButton>
                 <UiCollapsible v-if="n.items">
                   <UiCollapsibleTrigger as-child>
@@ -73,7 +77,7 @@
                       class="group w-full justify-start gap-4 px-3"
                     >
                       <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                      <span>{{ n.title }}</span>
+                      <span class="dark:text-white">{{ n.title }}</span>
                       <Icon
                         name="lucide:chevron-down"
                         class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180"
@@ -88,7 +92,7 @@
                         variant="ghost"
                         class="justify-start gap-4 px-3"
                       >
-                        <span>{{ item.title }}</span>
+                        <span class="dark:text-white">{{ item.title }}</span>
                       </UiButton>
                     </template>
                   </UiCollapsibleContent>
@@ -96,41 +100,25 @@
               </template>
             </nav>
           </div>
-          <div class="mt-auto rounded-lg bg-muted/50 p-4 text-sm">
-            <div class="flex items-center justify-between">
-              <p class="font-semibold">Used space</p>
-              <UiButton class="size-6" size="icon-sm" variant="ghost">
-                <Icon name="lucide:x" class="size-4 text-muted-foreground" />
-              </UiButton>
-            </div>
-            <p class="mt-3 text-muted-foreground">
-              Your team has used 80% of your available space. Need more?
-            </p>
-            <UiProgress class="my-4 h-2" :model-value="80" />
 
-            <div class="flex items-center gap-1">
-              <UiButton class="px-2" variant="ghost" size="sm">Dismiss</UiButton>
-              <UiButton class="px-2 text-sky-500 hover:text-sky-600" variant="ghost" size="sm"
-                >Upgrade plan</UiButton
-              >
-            </div>
-          </div>
           <UiDivider class="my-6" />
           <div class="flex items-center gap-3 pb-8">
             <div class="flex items-center gap-3">
-              <UiAvatar :src="user.avatar" class="size-10" />
+              <UiAvatar
+                src="https://robohash.org/{{user.providerInfo.given_name}}"
+                class="size-10"
+              />
               <div>
-                <p class="text-sm font-semibold" v-html="user.username" />
-                <p class="text-sm text-muted-foreground" v-html="user.email" />
+                <p class="text-sm font-semibold" v-html="user.providerInfo.name" />
+                <p class="text-sm text-muted-foreground" v-html="user.providerInfo.email" />
               </div>
             </div>
             <UiTooltip>
               <UiTooltipTrigger as-child>
-                <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost">
+                <UiButton @click="signout" class="ml-auto shrink-0" size="icon-sm" variant="ghost">
                   <Icon name="lucide:log-out" class="size-4 text-muted-foreground" />
                 </UiButton>
               </UiTooltipTrigger>
-              <UiTooltipContent side="right" align="center">Logout</UiTooltipContent>
             </UiTooltip>
           </div>
         </div>
@@ -141,11 +129,12 @@
 
 <script lang="ts" setup>
   const search = ref<string>("");
+  const { logout, user } = useOidcAuth();
 
-  const user = {
-    avatar: "https://randomuser.me/api/portraits/med/men/2.jpg",
-    username: "Jane Doe",
-    email: "muzcad@he.tg",
+  const signout = async () => {
+    console.log("logging out");
+    await navigateTo("/hardlogout", { external: true });
+    await logout("keycloak");
   };
 
   const topNav = [

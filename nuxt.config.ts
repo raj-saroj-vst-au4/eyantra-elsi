@@ -8,6 +8,8 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "nuxt-icon",
     "nuxt-oidc-auth",
+    "@vee-validate/nuxt",
+    "@morev/vue-transitions/nuxt"
   ],
 
   routeRules: {
