@@ -1,169 +1,150 @@
 <template>
-  <aside class="h-screen w-[300px] border-r bg-gray-800">
-    <UiScrollArea class="size-full">
-      <div class="flex h-screen flex-col pt-7">
-        <NuxtLink to="#" class="flex w-full items-center gap-3 px-5">
-          <UiAvatar
-            src="/images/eyantralogo.svg"
-            alt="E-yantra"
-            class="size-7 rounded object-contain"
-          />
-          <span class="text-xl font-bold dark:text-white">E-Yantra</span>
-        </NuxtLink>
-        <div class="my-6 px-5">
-          <UiVeeInput v-model="search" placeholder="Search..." icon="lucide:search" />
-        </div>
-        <div class="flex h-full grow flex-col px-5 pb-8">
-          <div class="mb-10 flex flex-col gap-10">
-            <nav class="flex flex-col gap-1">
-              <template v-for="(n, i) in topNav" :key="i">
-                <UiButton
-                  v-if="!n.items"
-                  :to="n.link"
-                  size="default"
-                  variant="ghost"
-                  class="justify-start gap-4 px-3"
-                >
-                  <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                  <span class="dark:text-white">{{ n.title }}</span>
-                </UiButton>
-                <UiCollapsible v-if="n.items">
-                  <UiCollapsibleTrigger as-child>
-                    <UiButton
-                      size="default"
-                      variant="ghost"
-                      class="group w-full justify-start gap-4 px-3"
-                    >
-                      <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                      <span class="dark:text-white">{{ n.title }}</span>
-                      <Icon
-                        name="lucide:chevron-down"
-                        class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180"
-                      />
-                    </UiButton>
-                  </UiCollapsibleTrigger>
-                  <UiCollapsibleContent class="flex flex-col gap-1.5 pl-4 pr-2">
-                    <template v-for="(item, index) in n.items" :key="index">
-                      <UiButton
-                        :to="item.link"
-                        size="sm"
-                        variant="ghost"
-                        class="justify-start gap-4 px-3"
-                      >
-                        <span class="dark:text-white">{{ item.title }}</span>
-                      </UiButton>
-                    </template>
-                  </UiCollapsibleContent>
-                </UiCollapsible>
-              </template>
-            </nav>
-            <nav class="mt-auto flex flex-col gap-1">
-              <template v-for="(n, i) in bottomNav" :key="i">
-                <UiButton
-                  v-if="!n.items"
-                  :to="n.link"
-                  size="default"
-                  variant="ghost"
-                  class="justify-start gap-4 px-3"
-                >
-                  <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                  <span class="dark:text-white">{{ n.title }}</span>
-                </UiButton>
-                <UiCollapsible v-if="n.items">
-                  <UiCollapsibleTrigger as-child>
-                    <UiButton
-                      size="default"
-                      variant="ghost"
-                      class="group w-full justify-start gap-4 px-3"
-                    >
-                      <Icon v-if="n.icon" :name="n.icon" class="size-4 text-muted-foreground" />
-                      <span class="dark:text-white">{{ n.title }}</span>
-                      <Icon
-                        name="lucide:chevron-down"
-                        class="ml-auto size-4 text-muted-foreground transition group-data-[state=open]:rotate-180"
-                      />
-                    </UiButton>
-                  </UiCollapsibleTrigger>
-                  <UiCollapsibleContent class="flex flex-col gap-1.5 pl-4 pr-2">
-                    <template v-for="(item, index) in n.items" :key="index">
-                      <UiButton
-                        :to="item.link"
-                        size="sm"
-                        variant="ghost"
-                        class="justify-start gap-4 px-3"
-                      >
-                        <span class="dark:text-white">{{ item.title }}</span>
-                      </UiButton>
-                    </template>
-                  </UiCollapsibleContent>
-                </UiCollapsible>
-              </template>
-            </nav>
-          </div>
+  <button
+    data-drawer-target="logo-sidebar"
+    data-drawer-toggle="logo-sidebar"
+    aria-controls="logo-sidebar"
+    type="button"
+    class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
+  >
+    <span class="sr-only">Open sidebar</span>
+    <svg
+      class="h-6 w-6"
+      aria-hidden="true"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+      ></path>
+    </svg>
+  </button>
 
-          <UiDivider class="my-6" />
-          <div class="flex items-center gap-3 pb-8">
-            <div class="flex items-center gap-3">
-              <UiAvatar
-                src="https://robohash.org/{{user.providerInfo.given_name}}"
-                class="size-10"
+  <aside
+    id="logo-sidebar"
+    class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
+    aria-label="Sidebar"
+  >
+    <div
+      class="flex h-full flex-col justify-between overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800"
+    >
+      <div>
+        <a href="https://portal.e-yantra.org/" class="mb-5 flex items-center ps-2.5">
+          <img src="/images/eyantralogo.svg" class="me-3 h-6 sm:h-7" alt="Eyantra Logo" />
+          <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+            >E-Yantra</span
+          >
+        </a>
+        <hr />
+
+        <ul class="mt-2 space-y-2 font-medium">
+          <li>
+            <NuxtLink
+              to="/home"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon
+                name="lucide:layout-dashboard"
+                class="size-4 text-muted-foreground text-white"
               />
-              <div>
-                <p class="text-sm font-semibold" v-html="user.providerInfo.name" />
-                <p class="text-sm text-muted-foreground" v-html="user.providerInfo.email" />
-              </div>
-            </div>
-            <UiTooltip>
-              <UiTooltipTrigger as-child>
-                <UiButton @click="signout" class="ml-auto shrink-0" size="icon-sm" variant="ghost">
-                  <Icon name="lucide:log-out" class="size-4 text-muted-foreground" />
-                </UiButton>
-              </UiTooltipTrigger>
-            </UiTooltip>
+
+              <span class="ms-3">Dashboard</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/colleges"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon name="lucide:building-2" class="size-4 text-muted-foreground text-white" />
+
+              <span class="ms-3 flex-1 whitespace-nowrap">Colleges</span>
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/team"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />
+
+              <span class="ms-3 flex-1 whitespace-nowrap">My Team</span>
+              <span
+                class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                >3</span
+              >
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/profile"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon name="lucide:contact-round" class="size-4 text-muted-foreground text-white" />
+
+              <span class="ms-3 flex-1 whitespace-nowrap">Profile</span>
+            </NuxtLink>
+          </li>
+          <!-- <li>
+            <a
+              href="#"
+              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <svg
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 18 20"
+              >
+                <path
+                  d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"
+                />
+              </svg>
+              <span class="flex-1 ms-3 whitespace-nowrap">Colleges</span>
+            </a>
+          </li> -->
+          <li>
+            <NuxtLink
+              to="/"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon name="lucide:file-pen-line" class="size-4 text-muted-foreground text-white" />
+              <span class="ms-3 flex-1 whitespace-nowrap">Apply for eLSI</span>
+              <span
+                class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                >3</span
+              >
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
+      <div class="flex items-center gap-3 pb-8">
+        <div class="flex items-center gap-3">
+          <UiAvatar src="https://robohash.org/{{user.providerInfo.given_name}}" class="size-10" />
+          <div>
+            <p class="text-sm font-semibold text-white" v-html="user?.providerInfo.name" />
+            <p class="text-sm text-muted-foreground text-white" v-html="user?.providerInfo.email" />
           </div>
         </div>
+        <UiTooltip>
+          <UiTooltipTrigger as-child>
+            <UiButton
+              @click="logout('keycloak')"
+              class="ml-auto shrink-0"
+              size="icon-sm"
+              variant="ghost"
+            >
+              <Icon name="lucide:log-out" class="size-5 text-muted-foreground text-white" />
+            </UiButton>
+          </UiTooltipTrigger>
+        </UiTooltip>
       </div>
-    </UiScrollArea>
+    </div>
   </aside>
 </template>
-
-<script lang="ts" setup>
-  const search = ref<string>("");
-  const { logout, user } = useOidcAuth();
-
-  const signout = async () => {
-    console.log("logging out");
-    await navigateTo("/hardlogout", { external: true });
-    await logout("keycloak");
-  };
-
-  const topNav = [
-    { title: "Home", icon: "lucide:home", link: "#" },
-    {
-      title: "Dashboard",
-      icon: "lucide:bar-chart-3",
-      items: [
-        { title: "Overview", link: "#" },
-        { title: "Notifications", link: "#" },
-        { title: "Analytics", link: "#" },
-        { title: "Reports", link: "#" },
-      ],
-    },
-    { title: "Projects", icon: "lucide:folder-dot", link: "#" },
-    { title: "Tasks", icon: "lucide:list-checks", link: "#" },
-    { title: "Users", icon: "lucide:users", link: "#" },
-  ];
-  const bottomNav = [
-    { title: "Support", icon: "lucide:life-buoy", link: "#" },
-    {
-      title: "Settings",
-      icon: "lucide:settings-2",
-      items: [
-        { title: "Profile", link: "#" },
-        { title: "Account", link: "#" },
-        { title: "Security", link: "#" },
-        { title: "Billing", link: "#" },
-      ],
-    },
-  ];
+<script setup>
+  const { user, logout } = useOidcAuth();
 </script>
