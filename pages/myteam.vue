@@ -1,7 +1,7 @@
 <template>
-  <UiCard description="Invite your team members to collaborate.">
+  <UiCard class="text-white" description="Manage your Team Members">
     <template #title>
-      <UiCardTitle class="text-xl"> Team Members </UiCardTitle>
+      <UiCardTitle class="text-xl text-white">Team Members</UiCardTitle>
     </template>
     <template #content>
       <UiCardContent class="grid gap-6">

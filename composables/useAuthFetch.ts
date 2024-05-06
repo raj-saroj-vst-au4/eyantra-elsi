@@ -32,6 +32,9 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
       } catch (err: any) {
         if (err.response && err.response.status === 403) {
           return router.push("/completesignup");
+        } else if (err.response.status === 500) {
+          console.log("refreshing");
+          return await refresh();
         } else {
           throw err;
         }

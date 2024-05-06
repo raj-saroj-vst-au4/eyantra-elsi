@@ -11,8 +11,8 @@
         >
       </NuxtLink>
       <div class="flex space-x-3 dark:text-white md:order-2 md:space-x-0 rtl:space-x-reverse">
-        <span v-if="loggedIn && user" class="whitespace-nowrap text-2xl font-semibold"
-          >Welcome back, {{ user.providerInfo.name }} !</span
+        <span v-if="loggedIn && user.providerInfo" class="whitespace-nowrap text-2xl font-semibold"
+          >Welcome back, {{ user.providerInfo?.name }} !</span
         >
         <button
           v-else

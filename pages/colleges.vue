@@ -286,10 +286,10 @@
       const response = await useAuthFetch(`/backendapi/fetchelsicolleges?page=${page}`, {
         method: "POST",
       });
-      console.log("backend response", response);
+      // console.log("backend response", response);
       colleges.value = response.colleges;
       currentpage.value = page;
-      console.log(colleges);
+      // console.log(colleges);
     } catch (error) {
       console.error("Error fetching college data:", error);
     } finally {

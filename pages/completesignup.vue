@@ -122,7 +122,6 @@
                   class="w-full border border-gray-400 bg-white px-2 py-1"
                 />
               </div>
-
               <div class="mt-5">
                 <button class="w-full bg-blue-500 py-3 text-center text-white" type="submit">
                   Continue
