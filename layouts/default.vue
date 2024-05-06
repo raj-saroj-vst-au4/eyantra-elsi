@@ -1,6 +1,11 @@
 <template>
-  <div class="flex h-screen items-center justify-between bg-slate-500">
-    <Sidebar />
-    <slot />
+  <Sidebar />
+
+  <div class="min-h-screen bg-gray-900 p-4 sm:ml-64">
+    <slot class="p-4 sm:ml-64" :isLoading="isLoading" />
   </div>
 </template>
+<script setup>
+  useState("isLoading", () => true);
+  const isLoading = useState("isLoading");
+</script>

@@ -42,7 +42,7 @@
         <ul class="mt-2 space-y-2 font-medium">
           <li>
             <NuxtLink
-              to="/home"
+              to="/"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <Icon
@@ -65,7 +65,7 @@
           </li>
           <li>
             <NuxtLink
-              to="/team"
+              to="/myteam"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />

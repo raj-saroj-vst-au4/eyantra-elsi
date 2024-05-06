@@ -248,7 +248,8 @@
   const fetchCountries = async () => {
     try {
       const response: any = await fetch("/backendapi/anon/getcountries");
-      countries.value = response.countries;
+      const countriesjson = await response.json();
+      countries.value = countriesjson.countries;
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
@@ -257,7 +258,8 @@
   const fetchStates = async (country: string) => {
     try {
       const response: any = await fetch(`/backendapi/anon/getstates/${country}`);
-      states.value = response.states;
+      const statesjson = await response.json();
+      states.value = statesjson.states;
     } catch (error) {
       console.error("Error fetching states:", error);
     }
@@ -266,8 +268,8 @@
   const fetchColleges = async (country: string, state: string) => {
     try {
       const response: any = await fetch(`/backendapi/anon/getcolleges/${country}/${state}`);
-      // const clg = await res.json();
-      colleges.value = response.colleges;
+      const clgjson = await response.json();
+      colleges.value = clgjson.colleges;
     } catch (err) {
       console.log("error fetching colleges:", err);
     }
@@ -276,7 +278,8 @@
   const fetchDesignations = async () => {
     try {
       const response: any = await fetch("/backendapi/anon/getdesignations");
-      designations.value = response;
+      const desjson = await response.json();
+      designations.value = desjson;
     } catch (error) {
       console.error("Error fetching designations:", error);
     }

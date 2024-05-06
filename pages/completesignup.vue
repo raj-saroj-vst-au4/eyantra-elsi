@@ -168,7 +168,7 @@
   const fetchCountries = async () => {
     try {
       const response = await useAuthFetch("/backendapi/getcountries");
-      // const countriesjson = await response.json();
+      // const countriesJson = await response.json();
       countries.value = response.countries;
     } catch (error) {
       console.error("Error fetching countries:", error);
@@ -178,6 +178,7 @@
   const fetchStates = async (country) => {
     try {
       const response = await useAuthFetch(`/backendapi/getstates/${country}`);
+      // const statesJson = await response.json();
       collegestates.value = response.states;
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -187,7 +188,7 @@
   const fetchColleges = async (country, state) => {
     try {
       const res = await useAuthFetch(`/backendapi/getcolleges/${country}/${state}`);
-      // const clg = await res.json();
+      // const clgJson = await res.json();
       colleges.value = res.colleges;
     } catch (err) {
       console.log("error fetching colleges:", err);
@@ -196,7 +197,9 @@
 
   const fetchDepartments = async () => {
     try {
-      departments.value = await useAuthFetch("/backendapi/getdepartments");
+      const res = await useAuthFetch("/backendapi/getdepartments");
+      // const deptJson = await res.json();
+      departments.value = res;
     } catch (error) {
       console.error("Error fetching departments:", error);
     }
@@ -204,7 +207,9 @@
 
   const fetchDesignations = async () => {
     try {
-      designations.value = await useAuthFetch("/backendapi/getdesignations");
+      const res = await useAuthFetch("/backendapi/getdesignations");
+      // const desJson = await res.json();
+      designations.value = res;
     } catch (error) {
       console.error("Error fetching designations:", error);
     }
@@ -218,10 +223,11 @@
       });
       if (response && response.signup) {
         console.log(response.signup);
-        router.push("/home");
+        router.push("/");
       }
+      console.log("check signup response", response);
     } else {
-      $oidc.login();
+      route.push("/auth/login");
     }
   };
 
@@ -269,11 +275,11 @@
       });
 
       if (response.status == 200) {
-        console.log("form submitted");
+        console.log("BE response ", response);
         validationError.value = null;
-        $router.push("/home");
+        router.push("/");
       } else if (response.status == 401) {
-        console.log(response);
+        console.log("code 401 : ", response);
       } else {
         validationError.value = Object.values(response.errors)[0][0];
         console.log("server response ", Object.values(response.errors)[0][0]);

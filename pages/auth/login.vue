@@ -318,8 +318,8 @@
   const showPopover = ref(false);
 
   const checkSignup = async () => {
-    if (loggedIn && user) {
-      // console.log("auth user, sending data");
+    if (loggedIn.value) {
+      console.log("user logged in");
       const response = await useAuthFetch("/backendapi/protected", {
         method: "POST",
       });
@@ -327,7 +327,8 @@
         router.push("/");
       }
     } else {
-      login("keycloak");
+      console.log("user not logged in");
+      await login("keycloak");
     }
   };
 </script>

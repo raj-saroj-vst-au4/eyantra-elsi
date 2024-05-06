@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-oidc-auth",
     "@vee-validate/nuxt",
-    "@morev/vue-transitions/nuxt"
+    "@morev/vue-transitions/nuxt",
   ],
 
   routeRules: {
@@ -44,11 +44,17 @@ export default defineNuxtConfig({
         clientSecret: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_SECRET as string,
         redirectUri: process.env.NUXT_APP_DOMAIN + "/auth/keycloak/callback",
         exposeAccessToken: true,
+        validateAccessToken: true,
       },
     },
     middleware: {
       globalMiddlewareEnabled: true,
       customLoginPage: true,
+    },
+    session: {
+      automaticRefresh: true,
+      expirationCheck: true,
+      maxAge: 60 * 60 * 60,
     },
   },
 
