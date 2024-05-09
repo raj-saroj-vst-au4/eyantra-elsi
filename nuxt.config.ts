@@ -44,7 +44,6 @@ export default defineNuxtConfig({
         clientSecret: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_SECRET as string,
         redirectUri: process.env.NUXT_APP_DOMAIN + "/auth/keycloak/callback",
         exposeAccessToken: true,
-        validateAccessToken: true,
       },
     },
     middleware: {

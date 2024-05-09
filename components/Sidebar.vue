@@ -129,22 +129,44 @@
             <p class="text-sm text-muted-foreground text-white" v-html="user?.providerInfo.email" />
           </div>
         </div>
-        <UiTooltip>
-          <UiTooltipTrigger as-child>
-            <UiButton
-              @click="logout('keycloak')"
-              class="ml-auto shrink-0"
-              size="icon-sm"
-              variant="ghost"
-            >
+        <UiAlertDialog v-model:open="model">
+          <UiAlertDialogTrigger as-child>
+            <UiButton class="ml-auto shrink-0" size="icon-sm" variant="ghost">
               <Icon name="lucide:log-out" class="size-5 text-muted-foreground text-white" />
             </UiButton>
-          </UiTooltipTrigger>
-        </UiTooltip>
+          </UiAlertDialogTrigger>
+          <UiAlertDialogContent @escape-key-down="showMessage('Escape key pressed')">
+            <UiAlertDialogHeader>
+              <UiAlertDialogTitle class="text-white">Are you absolutely sure?</UiAlertDialogTitle>
+              <UiAlertDialogDescription class="text-white">
+                Use softlogout to logout this portal but stay loggedin to SSO, use hardlogout to
+                signout of SSO as well.
+              </UiAlertDialogDescription>
+            </UiAlertDialogHeader>
+            <UiAlertDialogFooter>
+              <UiAlertDialogCancel class="bg-white hover:bg-gray-400" @click="logout('keycloak')"
+                >Soft</UiAlertDialogCancel
+              >
+              <UiAlertDialogAction class="bg-red-400 hover:bg-red-700" @click="hardLogout"
+                >Hard</UiAlertDialogAction
+              >
+            </UiAlertDialogFooter>
+          </UiAlertDialogContent>
+        </UiAlertDialog>
       </div>
     </div>
   </aside>
 </template>
-<script setup>
+<script lang="ts" setup>
   const { user, logout } = useOidcAuth();
+  const showMessage = (message: string) => {
+    useSonner(message);
+  };
+  const model = ref(false);
+
+  const hardlogout = async () => {
+    navigateTo("/hardlogout").then(() => {
+      return logout("keycloak");
+    });
+  };
 </script>

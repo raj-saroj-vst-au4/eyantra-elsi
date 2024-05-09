@@ -6,6 +6,7 @@ export const useAuthUserStore = defineStore("user", {
     isSignedUp: false,
     role: "student",
   }),
+
   actions: {
     async checkSignup() {
       try {
