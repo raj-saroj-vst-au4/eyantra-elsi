@@ -1,6 +1,6 @@
 <template>
   <h1>Index Page</h1>
-  <h3>user: {{ user }}</h3>
+  <h3 class="text-white">user: {{ user }}</h3>
   <UiButton @click="logout('keycloak')">Logout</UiButton>
   <UiButton @click="signout">hard Logout</UiButton>
 </template>

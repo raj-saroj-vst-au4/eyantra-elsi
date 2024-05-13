@@ -19,6 +19,11 @@ export default defineNuxtConfig({
         to: `${process.env.NUXT_APP_BACKEND_URL}/api/**`,
       },
     },
+    "/keycloakapi/**": {
+      proxy: {
+        to: `${process.env.NUXT_OIDC_ADMIN_KEYCLOAK_URL}/**`,
+      },
+    },
     "/hardlogout": {
       redirect: `${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL}/protocol/openid-connect/logout?post_logout_redirect_uri=${process.env.NUXT_APP_DOMAIN}/auth/keycloak/logout&client_id=${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID}`,
     },

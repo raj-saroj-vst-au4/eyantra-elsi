@@ -15,7 +15,8 @@
 
   onMounted(() => {
     if (!userStore.isSignedUp) {
-      userStore.checkSignup;
+      console.log("checking signup");
+      userStore.checkSignup();
     }
   });
 </script>

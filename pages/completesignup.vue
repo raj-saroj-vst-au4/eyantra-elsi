@@ -253,38 +253,43 @@
   };
 
   const submitForm = async () => {
-    try {
-      const response = await useAuthFetch("/backendapi/regsubmit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: userFname.value,
-          username: user.value.providerInfo.preferred_username,
-          email: user.value.providerInfo.email,
-          country: selectedCountry.value,
-          state: selectedCollegeState.value,
-          college: selectedCollege.value,
-          department: selectedDepartment.value,
-          designation: selectedDesignation.value,
-          address: userAddress.value,
-          pin: userPincode.value,
-        }),
-      });
+    if (user.value.providerInfo.email_verified) {
+      try {
+        const response = await useAuthFetch("/backendapi/regsubmit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: userFname.value,
+            kcuid: user.value.providerInfo.sub,
+            username: user.value.providerInfo.preferred_username,
+            email: user.value.providerInfo.email,
+            country: selectedCountry.value,
+            state: selectedCollegeState.value,
+            college: selectedCollege.value,
+            department: selectedDepartment.value,
+            designation: selectedDesignation.value,
+            address: userAddress.value,
+            pin: userPincode.value,
+          }),
+        });
 
-      if (response.status == 200) {
-        console.log("BE response ", response);
-        validationError.value = null;
-        router.push("/");
-      } else if (response.status == 401) {
-        console.log("code 401 : ", response);
-      } else {
-        validationError.value = Object.values(response.errors)[0][0];
-        console.log("server response ", Object.values(response.errors)[0][0]);
+        if (response.status == 200) {
+          console.log("BE response ", response);
+          validationError.value = null;
+          router.push("/");
+        } else if (response.status == 401) {
+          console.log("code 401 : ", response);
+        } else {
+          validationError.value = Object.values(response.errors)[0][0];
+          console.log("server response ", Object.values(response.errors)[0][0]);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      useSonner["error"]("Email not verified", { description: "Please verify your email first" });
     }
   };
 </script>
