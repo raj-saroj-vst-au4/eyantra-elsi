@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
@@ -19,7 +20,7 @@ export default defineNuxtConfig({
       },
     },
     "/hardlogout": {
-      redirect: `${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL}/protocol/openid-connect/logout?post_logout_redirect_uri=${process.env.NUXT_APP_DOMAIN}&client_id=${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID}`,
+      redirect: `${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL}/protocol/openid-connect/logout?post_logout_redirect_uri=${process.env.NUXT_APP_DOMAIN}/auth/keycloak/logout&client_id=${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID}`,
     },
   },
 
@@ -68,6 +69,15 @@ export default defineNuxtConfig({
         name: "VariantProps",
         type: true,
       },
+      {
+        from: "vue-sonner",
+        name: "toast",
+        as: "useSonner",
+      },
     ],
+  },
+
+  build: {
+    transpile: ["vue-sonner"],
   },
 });

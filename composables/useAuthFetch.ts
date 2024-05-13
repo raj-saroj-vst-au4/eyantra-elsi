@@ -38,16 +38,25 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
           },
         });
         // console.log("response ", res);
-        return res;
+        return res as T;
       } catch (err: any) {
         if (err.response.status === 401) {
           // console.log("relogging in");
-          return await login("keycloak");
+          return (await login("keycloak")) as T;
         } else if (err.response && err.response.status === 403) {
-          return router.push("/completesignup");
+          useSonner["warning"]("WARNING", {
+            description: "Please complete signup, redirecting...",
+          });
+          setTimeout(() => {
+            return router.push("/completesignup");
+          }, 2000);
+          // return router.push("/completesignup") as T;
         } else if (err.response.status === 500 || err.response.status === 419) {
           // console.log("refreshing page");
-          return location.reload();
+          useSonner["error"]("ERROR", { description: "Session Expired, refreshing page" });
+          setTimeout(() => {
+            return location.reload();
+          }, 2000);
         } else {
           throw err;
         }

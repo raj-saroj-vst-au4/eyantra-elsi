@@ -290,10 +290,12 @@
       colleges.value = response.colleges;
       currentpage.value = page;
       // console.log(colleges);
+      isLoading.value = false;
     } catch (error) {
       console.error("Error fetching college data:", error);
-    } finally {
-      isLoading.value = false;
+      useSonner["error"]("Error", {
+        description: "Sorry, you donot access to Fetch Colleges List",
+      });
     }
   };
   onMounted(async () => {
