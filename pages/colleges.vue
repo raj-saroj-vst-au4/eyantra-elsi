@@ -100,6 +100,7 @@
               id="table-search-colleges"
               class="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Search for Colleges"
+              v-model="searchQuery"
             />
           </div>
         </div>
@@ -115,6 +116,9 @@
           <th scope="col" class="px-6 py-3">District</th>
           <th scope="col" class="px-6 py-3">Address</th>
           <th scope="col" class="px-6 py-3">Pincode</th>
+          <th scope="col" class="px-6 py-3">LI Date</th>
+          <th scope="col" class="px-6 py-3">LOI</th>
+          <th scope="col" class="px-6 py-3">Payment</th>
           <th scope="col" class="px-6 py-3">Action</th>
         </tr>
       </thead>
@@ -125,7 +129,7 @@
           <td>colleges</td>
         </tr> -->
         <tr
-          v-for="college in colleges.data"
+          v-for="college in filteredColleges"
           :key="college.id"
           class="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
         >
@@ -133,10 +137,15 @@
             scope="row"
             class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
           >
-            {{ college.college_name }}
+            {{
+              college.college_name.substring(0, 30) +
+              (college.college_name.length > 30 ? "..." : "")
+            }}
           </th>
           <td class="px-6 py-4">{{ college.district }}</td>
-          <td class="px-6 py-4">{{ college.address }}</td>
+          <td class="px-6 py-4">
+            {{ college.address.substring(0, 30) + (college.address.length > 30 ? "..." : "") }}
+          </td>
           <td class="px-6 py-4">{{ college.pincode }}</td>
           <td class="px-6 py-4">
             <div>
@@ -216,104 +225,60 @@
         class="flex flex-col items-start justify-between space-y-3 p-4 md:flex-row md:items-center md:space-y-0"
         aria-label="Table navigation"
       >
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
-          >Showing
-          <span class="font-semibold text-gray-900 dark:text-white"
-            >{{ colleges.from }}-{{ colleges.to }}</span
-          >
-          of
-          <span class="font-semibold text-gray-900 dark:text-white">{{
-            colleges.total
-          }}</span></span
-        >
-        <ul class="inline-flex items-stretch -space-x-px">
-          <li>
-            <button
-              @click="handlePrev"
-              class="ml-0 flex h-full items-center justify-center rounded-l-lg border border-gray-300 bg-white px-3 py-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span class="sr-only">Previous</span>
-              <svg
-                class="h-5 w-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              Prev
-            </button>
-          </li>
-          <li>
-            <button
-              @click="handleNext"
-              class="flex h-full items-center justify-center rounded-r-lg border border-gray-300 bg-white px-3 py-1.5 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              Next
-              <span class="sr-only">Next</span>
-              <svg
-                class="h-5 w-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </li>
-        </ul>
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing </span>
+        <ul class="inline-flex items-stretch -space-x-px"></ul>
       </nav>
     </div>
   </div>
 </template>
 <script setup>
-  const colleges = ref([]);
-  const currentpage = ref(1);
+  // import { useCollegesStore } from "stores/collegesStore";
+
+  const colleges = computed(() => collegesStore.getColleges);
   const isLoading = useState("isLoading");
-  const fetchpage = async (page) => {
+  const collegesStore = useCollegesStore();
+  const fetchCount = computed(() => collegesStore.getFetchCount);
+  const searchQuery = ref("");
+
+  const filteredColleges = computed(() => {
+    return colleges.value.filter((college) => {
+      const searchRegex = new RegExp(searchQuery.value, "i");
+      return (
+        searchRegex.test(college.college_name) ||
+        searchRegex.test(college.district) ||
+        searchRegex.test(college.address) ||
+        searchRegex.test(college.state) ||
+        searchRegex.test(college.abbreviation) ||
+        searchRegex.test(college.clg_code) ||
+        searchRegex.test(college.pincode.toString())
+      );
+    });
+  });
+  const fetchpage = async () => {
     isLoading.value = true;
     try {
-      const response = await useAuthFetch(`/backendapi/fetchelsicolleges?page=${page}`, {
-        method: "POST",
-      });
-      // console.log("backend response", response);
-      colleges.value = response.colleges;
-      currentpage.value = page;
-      // console.log(colleges);
+      if (fetchCount.value && fetchCount.value < 10) {
+        // Use the data from Pinia
+        console.log("Using colleges from pinia", collegesStore.getColleges);
+        colleges.value = collegesStore.getColleges;
+      } else {
+        // Fetch fresh data from the backend
+        const response = await useAuthFetch(`/backendapi/fetchelsicolleges`, {
+          method: "POST",
+        });
+        console.log("refreshing college list ", response);
+        collegesStore.setColleges(response.colleges);
+      }
+      // currentpage.value = page;
       isLoading.value = false;
     } catch (error) {
       console.error("Error fetching college data:", error);
       useSonner["error"]("Error", {
-        description: "Sorry, you donot access to Fetch Colleges List",
+        description: "Sorry, you donot have access to Fetch Colleges List",
       });
     }
   };
   onMounted(async () => {
-    await fetchpage(currentpage.value);
+    await fetchpage();
   });
-
-  const handlePrev = async () => {
-    if (currentpage.value > 1) {
-      await fetchpage(currentpage.value - 1);
-    } else {
-      console.log("This is the first page !");
-    }
-  };
-  const handleNext = async () => {
-    if (currentpage.value < colleges.value.last_page) {
-      await fetchpage(currentpage.value + 1);
-    } else {
-      console.log("This is the last page !");
-    }
-  };
 </script>

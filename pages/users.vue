@@ -194,7 +194,7 @@
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="name">
                       Current Role
                     </label>
-                    <span>{{ checkRole(user.username) }}</span>
+                    <span>{{ checkRole(user.kcuid) }}</span>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="username">
@@ -309,7 +309,6 @@
 
   const users = ref([]);
   const currentpage = ref(1);
-  const selectedUser = useState("currentuser", "loading...");
   const isLoading = useState("isLoading");
 
   const fetchpage = async (page) => {
@@ -318,10 +317,9 @@
       const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
         method: "POST",
       });
-      // console.log("backend response", response);
+      // console.log(response);
       users.value = response.users;
       currentpage.value = page;
-      // console.log(users);
     } catch (error) {
       console.error("Error fetching users data:", error);
     } finally {
@@ -332,8 +330,9 @@
     await fetchpage(currentpage.value);
   });
 
-  const checkRole = async (userid) => {
-    const userData = await useAuthFetch(`/keycloakapi/users/${userid}`);
-    console.log("Got user data");
+  const checkRole = async (keycloakuid) => {
+    const userData = await useAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
+    console.log("user data recieved", userData);
+    return userData.roles;
   };
 </script>

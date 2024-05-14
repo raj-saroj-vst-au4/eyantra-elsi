@@ -17,7 +17,7 @@ export const useAuthUserStore = defineStore("user", {
           method: "POST",
         });
         if (response && response.signup) {
-          console.log("checked signup", response);
+          // console.log("checked signup", response);
           return (this.isSignedUp = true);
         }
       } catch (err) {

@@ -19,9 +19,10 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
   // check if jwt is expired
   if (user.value.accessToken && loggedIn.value) {
     if (!checkToken(accessToken)) {
-      // console.log("refreshing access token");
+      console.log("refreshing access token");
       try {
         await refresh();
+        return location.reload();
       } catch (e) {
         await logout("keycloak");
       }
@@ -51,7 +52,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
             return router.push("/completesignup");
           }, 2000);
           // return router.push("/completesignup") as T;
-        } else if (err.response.status === 500 || err.response.status === 419) {
+        } else if (err.response.status === 500) {
           // console.log("refreshing page");
           useSonner["error"]("ERROR", { description: "Session Expired, refreshing page" });
           setTimeout(() => {

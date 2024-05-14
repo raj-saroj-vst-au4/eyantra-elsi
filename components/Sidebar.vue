@@ -53,7 +53,7 @@
               <span class="ms-3">Dashboard</span>
             </NuxtLink>
           </li>
-          <li>
+          <li v-if="myrole === 'isAdmin'">
             <NuxtLink
               to="/colleges"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -63,7 +63,7 @@
               <span class="ms-3 flex-1 whitespace-nowrap">Colleges</span>
             </NuxtLink>
           </li>
-          <li>
+          <li v-if="myrole === 'isAdmin'">
             <NuxtLink
               to="/users"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -71,6 +71,20 @@
               <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />
 
               <span class="ms-3 flex-1 whitespace-nowrap">Users</span>
+              <span
+                class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                >3</span
+              >
+            </NuxtLink>
+          </li>
+          <li v-if="myrole === 'isAdmin'">
+            <NuxtLink
+              to="/labinaug"
+              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            >
+              <Icon name="lucide:flame" class="size-4 text-muted-foreground text-white" />
+
+              <span class="ms-3 flex-1 whitespace-nowrap">Lab Inaugration</span>
               <span
                 class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
                 >3</span
@@ -106,7 +120,7 @@
               <span class="flex-1 ms-3 whitespace-nowrap">Colleges</span>
             </a>
           </li> -->
-          <li>
+          <!-- <li>
             <NuxtLink
               to="/"
               class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -118,7 +132,7 @@
                 >3</span
               >
             </NuxtLink>
-          </li>
+          </li> -->
         </ul>
       </div>
       <div class="flex items-center gap-3 pb-8">
@@ -158,12 +172,43 @@
   </aside>
 </template>
 <script lang="ts" setup>
+  import { jwtDecode } from "jwt-decode";
+
+  interface Jwt {
+    resource_access: {
+      "realm-management": {
+        roles: string[];
+      };
+    };
+  }
+
   const { user, logout } = useOidcAuth();
   const router = useRouter();
+  const myrole = ref("isStudent");
   const showMessage = (message: string) => {
     useSonner(message);
   };
   const model = ref(false);
+  const rawjwt = user.value.accessToken as string;
+  const decodedToken: Jwt = jwtDecode(rawjwt);
+  const jwtroles = decodedToken?.resource_access["realm-management"]?.roles;
+
+  onMounted(() => {
+    checkRole();
+  });
+
+  const checkRole = () => {
+    if (jwtroles.includes("realm-admin")) {
+      console.log("is admin");
+      myrole.value = "isAdmin";
+    } else if (jwtroles.includes("elsi-teacher")) {
+      console.log(" is not admin but teacher");
+      myrole.value = "isTeacher";
+    } else {
+      console.log("is student");
+      myrole.value = "isStudent";
+    }
+  };
 
   const hardLogout = async () => {
     router.push("/hardlogout");
