@@ -13,15 +13,15 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
     return true;
   };
 
-  const accessToken = user.value.accessToken as string;
   let xsrfToken = useCookie("XSRF-TOKEN").value;
 
   // check if jwt is expired
   if (user.value.accessToken && loggedIn.value) {
-    if (!checkToken(accessToken)) {
+    if (!checkToken(user.value.accessToken)) {
       console.log("refreshing access token");
       try {
-        await refresh();
+        // await refresh();
+        console.log("trying to refresh access token");
         return location.reload();
       } catch (e) {
         await logout("keycloak");
@@ -33,7 +33,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
           ...(options as any),
           headers: {
             "X-XSRF-TOKEN": xsrfToken,
-            Authorization: `Bearer ${user.value?.accessToken}`,
+            Authorization: `Bearer ${user.value.accessToken}`,
             ...headers,
             ...options?.headers,
           },
@@ -42,7 +42,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
         return res as T;
       } catch (err: any) {
         if (err.response.status === 401) {
-          // console.log("relogging in");
+          console.log("relogging in got 401");
           return (await login("keycloak")) as T;
         } else if (err.response && err.response.status === 403) {
           useSonner["warning"]("WARNING", {

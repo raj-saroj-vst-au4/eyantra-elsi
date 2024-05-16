@@ -12,6 +12,12 @@ export const useCollegesStore = defineStore("colleges", {
       this.lastFetch = Date.now();
       this.fetchCount++;
     },
+    updateCollege(updatedCollege: Object) {
+      const index = this.colleges.findIndex((college) => college.id === updatedCollege.id);
+      if (index !== -1) {
+        this.colleges.splice(index, 1, updatedCollege);
+      }
+    },
   },
   getters: {
     getColleges: (state) => state.colleges,

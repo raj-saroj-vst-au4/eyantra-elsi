@@ -308,10 +308,9 @@
   } from "radix-vue";
 
   const users = ref([]);
-  const currentpage = ref(1);
   const isLoading = useState("isLoading");
 
-  const fetchpage = async (page) => {
+  const fetchpage = async () => {
     isLoading.value = true;
     try {
       const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
@@ -319,7 +318,6 @@
       });
       // console.log(response);
       users.value = response.users;
-      currentpage.value = page;
     } catch (error) {
       console.error("Error fetching users data:", error);
     } finally {
@@ -327,7 +325,7 @@
     }
   };
   onMounted(async () => {
-    await fetchpage(currentpage.value);
+    await fetchpage();
   });
 
   const checkRole = async (keycloakuid) => {

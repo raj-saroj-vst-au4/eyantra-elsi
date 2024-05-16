@@ -59,7 +59,8 @@ export default defineNuxtConfig({
     session: {
       automaticRefresh: true,
       expirationCheck: true,
-      maxAge: 60 * 60 * 60,
+      expirationThreshold: 3600,
+      maxAge: 1800,
     },
   },
 
@@ -85,16 +86,4 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vue-sonner"],
   },
-
-  app: {
-    head: {
-      script: [{
-        src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/pdfmake.min.js",
-        defer: true
-      }, {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.9/vfs_fonts.min.js",
-        defer: true
-      }]
-    }
-  }
 });
