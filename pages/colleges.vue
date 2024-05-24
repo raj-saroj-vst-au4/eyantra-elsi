@@ -113,8 +113,8 @@
       <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-4 py-3">College name</th>
+          <th scope="col" class="px-4 py-3">College name</th>
           <th scope="col" class="px-4 py-3">District</th>
-          <th scope="col" class="px-4 py-3">Address</th>
           <th scope="col" class="px-4 py-3">Pincode</th>
           <th scope="col" class="px-4 py-3">LI Date</th>
           <th scope="col" class="px-4 py-3">LOI</th>
@@ -129,10 +129,16 @@
           <td>colleges</td>
         </tr> -->
         <tr
-          v-for="college in filteredColleges"
+          v-for="college in paginatedColleges"
           :key="college.id"
           class="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
         >
+          <th
+            scope="row"
+            class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
+          >
+            {{ college.clg_code }}
+          </th>
           <th
             scope="row"
             class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
@@ -143,53 +149,62 @@
             }}
           </th>
           <td class="px-4 py-3">{{ college.district }}</td>
-          <td class="px-4 py-3">
-            {{ college.address.substring(0, 30) + (college.address.length > 20 ? "..." : "") }}
-          </td>
           <td class="px-4 py-3">{{ college.pincode }}</td>
           <td class="px-4 py-3">{{ college.inauguration_date }}</td>
           <td class="px-4 py-3">
             <button
               v-if="!college.intent_letter"
               type="button"
-              class="mb-2 me-2 rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
               @click="triggerLoiModal(college)"
             >
+              <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
               Add
             </button>
             <button
               v-else
               type="button"
-              class="mb-2 me-2 rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
-              @click="triggerLoiModal(college)"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              @click="redirectTo(college.intent_letter)"
             >
               View
+              <Icon
+                name="lucide:square-arrow-out-up-right"
+                class="ml-1 size-4 text-muted-foreground"
+              />
             </button>
           </td>
           <td class="px-4 py-3">
             <button
               v-if="!college.pay_proof"
               type="button"
-              class="mb-2 me-2 rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
               @click="triggerPaymentModal(college)"
             >
-              Upload
+              <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
+              Add
             </button>
             <button
               v-else
               type="button"
-              class="mb-2 me-2 rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-              @click="triggerPaymentModal(college)"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              @click="redirectTo(college.pay_proof)"
             >
               Check
+              <Icon
+                name="lucide:square-arrow-out-up-right"
+                class="ml-1 size-4 text-muted-foreground"
+              />
             </button>
           </td>
           <td class="px-4 py-3">
             <button
               type="button"
-              class="mb-2 me-2 rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              @click="triggerEditorModal(college)"
             >
-              Exec
+              <Icon name="lucide:file-cog" class="mr-1 size-4 text-muted-foreground" />
+              Modify
             </button>
           </td>
         </tr>
@@ -203,8 +218,35 @@
         class="flex flex-col items-start justify-between space-y-3 p-4 md:flex-row md:items-center md:space-y-0"
         aria-label="Table navigation"
       >
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing </span>
-        <ul class="inline-flex items-stretch -space-x-px"></ul>
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
+          >Showing {{ (currentPage - 1) * 10 + 1 }} to
+          {{
+            currentPage * 10 > filteredColleges?.length ? filteredColleges.length : currentPage * 10
+          }}
+          of {{ filteredColleges.length }} results</span
+        >
+        <ul class="inline-flex items-stretch -space-x-px">
+          <li>
+            <a
+              href="#"
+              class="ml-0 rounded-l-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              @click.prevent="goToPage(currentPage - 1)"
+              :disabled="currentPage === 1"
+            >
+              Previous
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="rounded-r-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              @click.prevent="goToPage(currentPage + 1)"
+              :disabled="currentPage === totalPages"
+            >
+              Next
+            </a>
+          </li>
+        </ul>
       </nav>
     </div>
     <LoiModal
@@ -219,6 +261,12 @@
       :trigger="triggerPaymentModal"
       :data="modalCollegeData"
     />
+    <CollegeEditorModal
+      v-if="showCollegeEditorModal"
+      :showCollegeEditorModal="showCollegeEditorModal"
+      :trigger="triggerEditorModal"
+      :data="modalCollegeData"
+    />
   </div>
 </template>
 <script setup>
@@ -227,12 +275,13 @@
   const collegesStore = useCollegesStore();
   const fetchCount = computed(() => collegesStore.getFetchCount);
   const searchQuery = ref("");
+  const currentPage = ref(1);
 
   const modalCollegeData = ref(null);
 
   const showLoiModal = ref(false);
   const showPaymentModal = ref(false);
-
+  const showCollegeEditorModal = ref(false);
   const triggerLoiModal = (clg) => {
     if (showLoiModal.value) {
       showLoiModal.value = false;
@@ -252,6 +301,20 @@
     }
   };
 
+  const triggerEditorModal = (clg) => {
+    if (showCollegeEditorModal.value) {
+      showCollegeEditorModal.value = false;
+      modalCollegeData.value = null;
+    } else {
+      showCollegeEditorModal.value = true;
+      modalCollegeData.value = clg;
+    }
+  };
+
+  const redirectTo = (url) => {
+    window.open(url, "_blank");
+  };
+
   const filteredColleges = computed(() => {
     return colleges.value?.filter((college) => {
       const searchRegex = new RegExp(searchQuery.value, "i");
@@ -266,11 +329,28 @@
       );
     });
   });
-  const fetchpage = async () => {
+
+  const paginatedColleges = computed(() => {
+    const startIndex = (currentPage.value - 1) * 10;
+    const endIndex = startIndex + 10;
+    return filteredColleges?.value?.slice(startIndex, endIndex);
+  });
+
+  const totalPages = computed(() => {
+    return Math.ceil(filteredColleges.value.length / 10);
+  });
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages.value) {
+      currentPage.value = page;
+    }
+  };
+
+  const fetchColleges = async () => {
     isLoading.value = true;
     try {
       if (fetchCount.value && fetchCount.value < 10) {
-        // console.log("Using colleges from pinia", collegesStore.getColleges);
+        console.log("Using colleges from pinia", collegesStore.getColleges);
         colleges.value = collegesStore.getColleges;
       } else {
         const response = await useAuthFetch(`/backendapi/fetchelsicolleges`, {
@@ -287,7 +367,12 @@
       });
     }
   };
-  onMounted(async () => {
-    await fetchpage();
+
+  onBeforeMount(() => {
+    fetchColleges();
+  });
+
+  watch(searchQuery, () => {
+    currentPage.value = 1;
   });
 </script>

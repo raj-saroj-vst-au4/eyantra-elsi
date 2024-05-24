@@ -324,7 +324,7 @@
       isLoading.value = false;
     }
   };
-  onMounted(async () => {
+  onBeforeMount(async () => {
     await fetchpage();
   });
 

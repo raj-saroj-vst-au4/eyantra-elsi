@@ -3,10 +3,7 @@
     v-if="showLoiModal"
     class="fixed inset-0 z-50 flex flex-row items-center justify-center overflow-y-auto overflow-x-hidden"
   >
-    <div
-      class="relative max-h-full w-full p-4"
-      :class="data.intent_letter ? 'h-xl max-w-xl' : 'max-w-md'"
-    >
+    <div class="relative max-h-full w-full max-w-md p-4">
       <div class="relative rounded-2xl bg-white shadow dark:bg-gray-700">
         <div class="p-4 text-center md:p-5">
           <svg
@@ -15,7 +12,6 @@
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 20 20"
-            v-if="!data.intent_letter"
           >
             <path
               stroke="currentColor"
@@ -25,19 +21,9 @@
               d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-          <h3
-            class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
-            v-if="!data.intent_letter"
-          >
+          <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
             Letter of Intent does not exist !
           </h3>
-          <embed
-            :src="data.intent_letter + '#toolbar=0&navpanes=0'"
-            class="mb-4"
-            width="100%"
-            height="480"
-            v-else
-          />
           <div>
             <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
               >Update PDF Link</label

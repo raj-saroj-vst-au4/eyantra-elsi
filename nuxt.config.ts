@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
     "nuxt-icon",
-    "nuxt-oidc-auth",
+    "raj-nuxt3-oidc-auth",
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
   ],
@@ -50,6 +50,7 @@ export default defineNuxtConfig({
         clientSecret: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_SECRET as string,
         redirectUri: process.env.NUXT_APP_DOMAIN + "/auth/keycloak/callback",
         exposeAccessToken: true,
+        tokenUrl: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_TOKEN_ENDPOINT,
       },
     },
     middleware: {
