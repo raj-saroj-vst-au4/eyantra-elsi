@@ -315,7 +315,6 @@
   // Access the plugin through the composable
   const { loggedIn, user, login } = useOidcAuth();
   const router = useRouter();
-  const showPopover = ref(false);
 
   const checkSignup = async () => {
     if (loggedIn.value) {

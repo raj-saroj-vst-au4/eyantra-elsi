@@ -160,7 +160,7 @@
 
           <td class="px-4 py-3">
             <Icon
-              v-if="!college.intent_letter && college.IS_eLSI"
+              v-if="(!college.intent_letter || !college.pay_proof) && college.IS_eLSI"
               name="lucide:circle-alert"
               class="mr-3 size-4 text-muted-foreground text-yellow-300"
             />{{ college.inauguration_date }}

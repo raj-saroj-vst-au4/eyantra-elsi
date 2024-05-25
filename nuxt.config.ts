@@ -50,8 +50,6 @@ export default defineNuxtConfig({
         clientId: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID as string,
         clientSecret: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_SECRET as string,
         redirectUri: process.env.NUXT_APP_DOMAIN + "/auth/keycloak/callback",
-        logoutUrl:
-          process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL + "protocol/openid-connect/logout",
         exposeAccessToken: true,
       },
     },
