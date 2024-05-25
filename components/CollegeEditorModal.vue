@@ -3,10 +3,10 @@
     v-if="showCollegeEditorModal"
     class="fixed inset-0 z-50 flex flex-row items-center justify-center overflow-y-auto overflow-x-hidden"
   >
-    <div class="relative max-h-full w-full max-w-md p-4 lg:max-w-lg">
+    <div class="relative max-h-full w-full max-w-md lg:max-w-lg">
       <div class="relative rounded-2xl bg-white shadow dark:bg-gray-700">
         <div class="p-4 md:p-5">
-          <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+          <div class="relative rounded-lg">
             <!-- Modal header -->
             <div class="flex items-center justify-between rounded-t border-b dark:border-gray-600">
               <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
@@ -65,11 +65,11 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-span-1">
+                <div class="col-span-2 sm:col-span-1">
                   <label
                     for="name"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Is Elsi ?</label
+                    >District</label
                   >
                   <div class="relative w-full">
                     <input
@@ -77,47 +77,179 @@
                       name="name"
                       id="name"
                       class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
-                      :class="{ 'cursor-not-allowed': !edit.IS_eLSI.value }"
+                      :class="{ 'cursor-not-allowed': !edit.district.value }"
                       required=""
-                      v-model="data.IS_eLSI"
-                      :disabled="!edit.IS_eLSI.value"
+                      v-model="data.district"
+                      :disabled="!edit.district.value"
                     />
                     <button
-                      v-if="!edit.IS_eLSI.value"
-                      @click="toggleEdit('IS_eLSI')"
+                      v-if="!edit.district.value"
+                      @click="toggleEdit('district')"
                       class="absolute end-0 top-0 h-full rounded-e-lg border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
                     >
                       <Icon name="lucide:pencil" class="size-4 text-muted-foreground" />
                     </button>
                     <button
                       v-else
-                      @click="updateCollege(data.id, 'IS_eLSI', data.IS_eLSI)"
+                      @click="updateCollege(data.id, 'district', data.district)"
                       class="absolute end-0 top-0 h-full rounded-e-lg border border-green-400 bg-green-400 p-2.5 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-red-300"
                     >
                       <Icon
                         name="lucide:refresh-cw"
                         class="size-4 text-muted-foreground"
-                        :class="{ 'animate-spin': edit.IS_eLSI.loading }"
+                        :class="{ 'animate-spin': edit.district.loading }"
                       />
                     </button>
                   </div>
                 </div>
                 <div class="col-span-2 sm:col-span-1">
                   <label
-                    for="category"
+                    for="name"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Category</label
+                    >Pincode</label
                   >
-                  <select
-                    id="category"
-                    class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                  <div class="relative w-full">
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                      :class="{ 'cursor-not-allowed': !edit.pincode.value }"
+                      required=""
+                      v-model="data.pincode"
+                      :disabled="!edit.pincode.value"
+                    />
+                    <button
+                      v-if="!edit.pincode.value"
+                      @click="toggleEdit('pincode')"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon name="lucide:pencil" class="size-4 text-muted-foreground" />
+                    </button>
+                    <button
+                      v-else
+                      @click="updateCollege(data.id, 'pincode', data.pincode)"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-green-400 bg-green-400 p-2.5 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon
+                        name="lucide:refresh-cw"
+                        class="size-4 text-muted-foreground"
+                        :class="{ 'animate-spin': edit.pincode.loading }"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                  <label
+                    for="eYIC_allowed"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >eYIC Allowed?</label
                   >
-                    <option selected="">Select category</option>
-                    <option value="TV">TV/Monitors</option>
-                    <option value="PC">PC</option>
-                    <option value="GA">Gaming/Console</option>
-                    <option value="PH">Phones</option>
-                  </select>
+                  <div class="relative w-full">
+                    <select
+                      id="eYIC_allowed"
+                      class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                      :class="{ 'cursor-not-allowed': !edit.eYIC_allowed.value }"
+                      v-model.number="data.eYIC_allowed"
+                      :disabled="!edit.eYIC_allowed.value"
+                    >
+                      <option value="" disabled>Please select</option>
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                    </select>
+                    <button
+                      v-if="!edit.eYIC_allowed.value"
+                      @click="toggleEdit('eYIC_allowed')"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon name="lucide:pencil" class="size-4 text-muted-foreground" />
+                    </button>
+                    <button
+                      v-else
+                      @click="updateCollege(data.id, 'eYIC_allowed', data.eYIC_allowed)"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-green-400 bg-green-400 p-2.5 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon
+                        name="lucide:refresh-cw"
+                        class="size-4 text-muted-foreground"
+                        :class="{ 'animate-spin': edit.eYIC_allowed.loading }"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                  <label
+                    for="name"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >College Type</label
+                  >
+                  <div class="relative w-full">
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                      :class="{ 'cursor-not-allowed': !edit.college_type.value }"
+                      required=""
+                      v-model="data.college_type"
+                      :disabled="!edit.college_type.value"
+                    />
+                    <button
+                      v-if="!edit.college_type.value"
+                      @click="toggleEdit('college_type')"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon name="lucide:pencil" class="size-4 text-muted-foreground" />
+                    </button>
+                    <button
+                      v-else
+                      @click="updateCollege(data.id, 'college_type', data.college_type)"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-green-400 bg-green-400 p-2.5 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon
+                        name="lucide:refresh-cw"
+                        class="size-4 text-muted-foreground"
+                        :class="{ 'animate-spin': edit.college_type.loading }"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="name"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Website</label
+                  >
+                  <div class="relative w-full">
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                      :class="{ 'cursor-not-allowed': !edit.website.value }"
+                      required=""
+                      v-model="data.website"
+                      :disabled="!edit.website.value"
+                    />
+                    <button
+                      v-if="!edit.website.value"
+                      @click="toggleEdit('website')"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon name="lucide:pencil" class="size-4 text-muted-foreground" />
+                    </button>
+                    <button
+                      v-else
+                      @click="updateCollege(data.id, 'website', data.website)"
+                      class="absolute end-0 top-0 h-full rounded-e-lg border border-green-400 bg-green-400 p-2.5 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                    >
+                      <Icon
+                        name="lucide:refresh-cw"
+                        class="size-4 text-muted-foreground"
+                        :class="{ 'animate-spin': edit.website.loading }"
+                      />
+                    </button>
+                  </div>
                 </div>
                 <div class="col-span-2">
                   <label
@@ -161,7 +293,23 @@
       value: false,
       loading: false,
     },
-    IS_eLSI: {
+    district: {
+      value: false,
+      loading: false,
+    },
+    pincode: {
+      value: false,
+      loading: false,
+    },
+    eYIC_allowed: {
+      value: false,
+      loading: false,
+    },
+    college_type: {
+      value: false,
+      loading: false,
+    },
+    website: {
       value: false,
       loading: false,
     },

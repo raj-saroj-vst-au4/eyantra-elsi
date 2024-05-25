@@ -112,7 +112,8 @@
 
       <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-4 py-3">College name</th>
+          <th scope="col" class="px-4 py-3">Code</th>
+          <th scope="col" class="px-4 py-3">eLSI</th>
           <th scope="col" class="px-4 py-3">College name</th>
           <th scope="col" class="px-4 py-3">District</th>
           <th scope="col" class="px-4 py-3">Pincode</th>
@@ -139,6 +140,12 @@
           >
             {{ college.clg_code }}
           </th>
+          <td class="px-4 py-3">
+            <span
+              class="me-3 flex h-3 w-3 rounded-full"
+              :class="college.IS_eLSI ? 'bg-green-400' : 'bg-red-400'"
+            ></span>
+          </td>
           <th
             scope="row"
             class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
@@ -150,7 +157,14 @@
           </th>
           <td class="px-4 py-3">{{ college.district }}</td>
           <td class="px-4 py-3">{{ college.pincode }}</td>
-          <td class="px-4 py-3">{{ college.inauguration_date }}</td>
+
+          <td class="px-4 py-3">
+            <Icon
+              v-if="!college.intent_letter && college.IS_eLSI"
+              name="lucide:circle-alert"
+              class="mr-3 size-4 text-muted-foreground text-yellow-300"
+            />{{ college.inauguration_date }}
+          </td>
           <td class="px-4 py-3">
             <button
               v-if="!college.intent_letter"

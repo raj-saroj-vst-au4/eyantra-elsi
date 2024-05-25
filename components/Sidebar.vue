@@ -153,15 +153,13 @@
   const { user, logout } = useOidcAuth();
   const router = useRouter();
   const myrole = ref("isStudent");
-  const showMessage = (message: string) => {
-    useSonner(message);
-  };
+
   const model = ref(false);
   const rawjwt = user.value.accessToken as string;
   const decodedToken: Jwt = jwtDecode(rawjwt);
   const jwtroles = decodedToken?.resource_access["realm-management"]?.roles;
 
-  onMounted(() => {
+  onBeforeMount(() => {
     checkRole();
   });
 

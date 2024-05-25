@@ -13,7 +13,7 @@
   const isLoading = useState("isLoading");
   const userStore = useAuthUserStore();
 
-  onMounted(() => {
+  onBeforeMount(() => {
     if (!userStore.isSignedUp) {
       console.log("checking signup");
       userStore.checkSignup();
