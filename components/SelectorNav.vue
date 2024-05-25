@@ -5,44 +5,15 @@
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
       <NuxtLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="/images/eyantralogo.svg" class="h-8" alt="Eyantra Logo" />
-        <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white"
+        <span
+          class="hidden self-center whitespace-nowrap text-2xl font-semibold dark:text-white md:block"
           >Eyantra</span
         >
       </NuxtLink>
-      <div class="flex flex-row justify-between text-gray-200">
-        <UiTooltip disable-closing-trigger>
-          <template #trigger>
-            <UiTooltipTrigger as-child>
-              <UiButton size="icon"
-                ><Icon class="h-6 w-6 font-extrabold" name="lucide:home"
-              /></UiButton>
-            </UiTooltipTrigger>
-          </template>
-          <template #content>
-            <UiTooltipContent>
-              <p>Go back to portal</p>
-            </UiTooltipContent>
-          </template>
-        </UiTooltip>
-
-        <UiTooltip disable-closing-trigger>
-          <template #trigger>
-            <UiTooltipTrigger as-child>
-              <UiButton size="icon" @click="closeTime"
-                ><Icon class="h-6 w-6 font-extrabold" name="lucide:refresh-cw"
-              /></UiButton>
-            </UiTooltipTrigger>
-          </template>
-          <template #content class="bg-gray-600">
-            <UiTooltipContent>
-              <p>Reset Curtains</p>
-            </UiTooltipContent>
-          </template>
-        </UiTooltip>
-      </div>
       <div class="flex space-x-3 dark:text-white md:order-2 md:space-x-0 rtl:space-x-reverse">
-        <div class="text-xl font-extrabold">
-          Time to welcome :<UiDropdownMenu>
+        <div class="flex items-center text-xl font-extrabold">
+          <span class="hidden md:block">Time to welcome :</span
+          ><UiDropdownMenu>
             <UiDropdownMenuTrigger as-child>
               <UiButton class="hover ml-4 rounded-2xl bg-slate-500 text-lg hover:bg-slate-600"
                 >Select College</UiButton
@@ -72,38 +43,68 @@
           </UiDropdownMenu>
         </div>
       </div>
-      <UiTooltip disable-closing-trigger>
-        <template #trigger>
-          <UiTooltipTrigger as-child>
-            <UiButton size="icon" @click="showTime"
-              ><Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum"
-            /></UiButton>
-          </UiTooltipTrigger>
-        </template>
-        <template #content class="bg-gray-600">
-          <UiTooltipContent>
-            <p>Start Inauguration</p>
-          </UiTooltipContent>
-        </template>
-      </UiTooltip>
+      <div class="flex flex-row justify-between text-gray-200">
+        <UiTooltip disable-closing-trigger>
+          <template #trigger>
+            <UiTooltipTrigger as-child>
+              <UiButton size="icon"
+                ><Icon class="h-6 w-6 font-extrabold" name="lucide:home"
+              /></UiButton>
+            </UiTooltipTrigger>
+          </template>
+          <template #content>
+            <UiTooltipContent>
+              <p>Go back to portal</p>
+            </UiTooltipContent>
+          </template>
+        </UiTooltip>
+        <UiTooltip disable-closing-trigger>
+          <template #trigger>
+            <UiTooltipTrigger as-child>
+              <UiButton size="icon" @click="showTime"
+                ><Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum"
+              /></UiButton>
+            </UiTooltipTrigger>
+          </template>
+          <template #content class="bg-gray-600">
+            <UiTooltipContent>
+              <p>Start Inauguration</p>
+            </UiTooltipContent>
+          </template>
+        </UiTooltip>
+        <UiTooltip disable-closing-trigger>
+          <template #trigger>
+            <UiTooltipTrigger as-child>
+              <UiButton size="icon" @click="closeTime"
+                ><Icon class="h-6 w-6 font-extrabold" name="lucide:refresh-cw"
+              /></UiButton>
+            </UiTooltipTrigger>
+          </template>
+          <template #content class="bg-gray-600">
+            <UiTooltipContent>
+              <p>Reset Curtains</p>
+            </UiTooltipContent>
+          </template>
+        </UiTooltip>
+      </div>
     </div>
   </nav>
 </template>
 <script setup>
   const heroList = [
     {
-      name: "Batman",
+      name: "APS College",
       id: "1",
       image:
         "https://static.dc.com/dc/files/default_images/Char_Profile_Batman_20190116_5c3fc4b40faec2.47318964.jpg",
     },
     {
-      name: "Superman",
+      name: "Vinayak College",
       id: "2",
       image: "https://s26162.pcdn.co/wp-content/uploads/2023/02/superman-1240x692.jpeg",
     },
     {
-      name: "Hulk",
+      name: "Abdul kalam College",
       id: "3",
       image:
         "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/The-Hulk.The-Incredible-Hulk.webp",

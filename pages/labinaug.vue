@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div id="starter" @click="showTime">Press Enter</div>
+    <div id="starter">
+      Welcome to Lab Inauguration
+      <img
+        id="bot"
+        class="mx-auto my-7 h-auto max-w-lg"
+        src="/images/lab.png"
+        alt="image description"
+      />
+    </div>
     <div id="scene" :class="{ expand: isExpanded }">
       <div id="curtain" :class="{ open: isOpen, close: isClosed }">
         <h1>TADA!</h1>
@@ -22,25 +30,28 @@
   const isClosed = ref(false);
 
   const showTime = () => {
-    isOpen.value = true;
-    isClosed.value = false;
-    isExpanded.value = true;
-    let starter = document.getElementById("starter");
-    starter.classList.add("fade-out");
-    setTimeout(() => {
-      starter.style.display = "none";
-    }, 2000);
+    if (!isExpanded.value) {
+      isOpen.value = true;
+      isClosed.value = false;
+      isExpanded.value = true;
+      let starter = document.getElementById("starter");
+      starter.classList.add("fade-out");
+      setTimeout(() => {
+        starter.style.display = "none";
+      }, 2000);
+    }
   };
   const closeTime = () => {
-    isOpen.value = false;
-    isClosed.value = true;
-    isExpanded.value = false;
-    let starter = document.getElementById("starter");
-
-    setTimeout(() => {
-      starter.style.display = "block";
-      starter.classList.remove("fade-out");
-    }, 2000);
+    if (isExpanded.value) {
+      isClosed.value = true;
+      let starter = document.getElementById("starter");
+      isOpen.value = false;
+      setTimeout(() => {
+        starter.classList.remove("fade-out");
+        starter.style.display = "block";
+        isExpanded.value = false;
+      }, 3900);
+    }
   };
 </script>
 
@@ -48,17 +59,33 @@
   #starter {
     z-index: 1;
     position: absolute;
-    top: 50%;
+    top: 25%;
     left: 50%;
-    width: 300px;
+    width: 450px;
     height: 50px;
-    margin-top: -25px;
-    margin-left: -150px;
+    margin-top: -40px;
+    margin-left: -250px;
     text-align: center;
     font-family: "Roboto Condensed", sans-serif;
     font-size: 2em;
-    font-weight: 600;
-    cursor: pointer;
+    font-weight: 800;
+  }
+
+  #bot {
+    -webkit-animation: linear infinite;
+    -webkit-animation-name: run;
+    -webkit-animation-duration: 5s;
+  }
+  @-webkit-keyframes run {
+    0% {
+      left: 0;
+    }
+    50% {
+      left: 100%;
+    }
+    100% {
+      left: 0;
+    }
   }
 
   #scene {
@@ -71,7 +98,7 @@
     margin-top: -300px;
     margin-left: -600px;
     background-color: rgb(0, 0, 0);
-    box-shadow: 0 0 0 2px red inset;
+    box-shadow: 0 0 0 2px white inset;
   }
   #curtain {
     top: 0;
@@ -206,14 +233,14 @@
       left: 50%;
       margin-left: -600px;
       background-color: rgb(0, 0, 0);
-      box-shadow: 0 0 0 2px red inset;
+      box-shadow: 0 0 0 2px white inset;
     }
     to {
       width: 140%;
       left: -20%;
       margin-left: 0;
       background-color: rgb(32, 32, 32);
-      box-shadow: 0 0 0 0 red inset;
+      box-shadow: 0 0 0 0 white inset;
     }
   }
 
