@@ -1,24 +1,22 @@
 <template>
-  <div>
-    <div id="starter">
-      Welcome to Lab Inauguration
-      <img
-        id="bot"
-        class="mx-auto my-7 h-auto max-w-lg"
-        src="/images/lab.png"
-        alt="image description"
-      />
-    </div>
-    <div id="scene" :class="{ expand: isExpanded }">
-      <div id="curtain" :class="{ open: isOpen, close: isClosed }">
-        <h1>TADA!</h1>
-        <div class="ground"></div>
-        <div class="left"></div>
-        <div class="right"></div>
-      </div>
-    </div>
-    <SelectorNav :showTime="showTime" :closeTime="closeTime" />
+  <div id="starter" class="relative z-20 mt-24 items-center text-center">
+    <span class="text-4xl font-extrabold"> Welcome to Lab Inauguration </span>
+    <img
+      id="bot"
+      class="mx-auto my-10 h-auto max-w-lg"
+      src="/images/lab.png"
+      alt="image description"
+    />
   </div>
+  <div id="scene" :class="{ expand: isExpanded }">
+    <div id="curtain" :class="{ open: isOpen, close: isClosed }">
+      <h1>TADA!</h1>
+      <div class="ground"></div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+  </div>
+  <SelectorNav :showTime="showTime" :closeTime="closeTime" />
 </template>
 
 <script setup>
@@ -28,17 +26,21 @@
   const isExpanded = ref(false);
   const isOpen = ref(false);
   const isClosed = ref(false);
+  const nuxtApp = useNuxtApp();
 
   const showTime = () => {
     if (!isExpanded.value) {
       isOpen.value = true;
       isClosed.value = false;
       isExpanded.value = true;
-      let starter = document.getElementById("starter");
-      starter.classList.add("fade-out");
+
       setTimeout(() => {
+        let starter = document.getElementById("starter");
+        starter.classList.add("fade-out");
         starter.style.display = "none";
       }, 2000);
+    } else {
+      makeItRain();
     }
   };
   const closeTime = () => {
@@ -46,6 +48,7 @@
       isClosed.value = true;
       let starter = document.getElementById("starter");
       isOpen.value = false;
+
       setTimeout(() => {
         starter.classList.remove("fade-out");
         starter.style.display = "block";
@@ -53,41 +56,37 @@
       }, 3900);
     }
   };
+
+  function makeItRain() {
+    const end = Date.now() + 2 * 1000;
+    const colors = ["#bb0000", "#ffffff"];
+
+    function frame() {
+      nuxtApp.$confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+      });
+      nuxtApp.$confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }
+
+    frame();
+  }
 </script>
 
 <style scoped>
-  #starter {
-    z-index: 1;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    width: 450px;
-    height: 50px;
-    margin-top: -40px;
-    margin-left: -250px;
-    text-align: center;
-    font-family: "Roboto Condensed", sans-serif;
-    font-size: 2em;
-    font-weight: 800;
-  }
-
-  #bot {
-    -webkit-animation: linear infinite;
-    -webkit-animation-name: run;
-    -webkit-animation-duration: 5s;
-  }
-  @-webkit-keyframes run {
-    0% {
-      left: 0;
-    }
-    50% {
-      left: 100%;
-    }
-    100% {
-      left: 0;
-    }
-  }
-
   #scene {
     position: fixed;
     top: 50%;

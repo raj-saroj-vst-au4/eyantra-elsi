@@ -54,7 +54,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
           // return router.push("/completesignup") as T;
         } else if (err.response.status === 500) {
           // console.log("refreshing page");
-          useSonner["error"]("ERROR", { description: "Session Expired, refreshing page" });
+          useSonner["error"]("ERROR", { description: "Backend Unreacheable, refreshing page" });
           setTimeout(() => {
             return location.reload();
           }, 2000);

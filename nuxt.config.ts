@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "raj-nuxt3-oidc-auth",
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
+    "@nuxt/image",
   ],
 
   routeRules: {
@@ -64,6 +65,8 @@ export default defineNuxtConfig({
       maxAge: 1800,
     },
   },
+
+  plugins: ["~/plugins/canvas-confetti.js"],
 
   imports: {
     imports: [

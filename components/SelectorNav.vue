@@ -2,7 +2,7 @@
   <nav
     class="navigation fixed bottom-8 left-[10%] z-30 w-4/5 rounded-3xl border-gray-200 bg-slate-700 dark:border-gray-600"
   >
-    <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+    <div class="mx-auto flex max-w-screen-xl items-center justify-between p-4">
       <NuxtLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="/images/eyantralogo.svg" class="h-8" alt="Eyantra Logo" />
         <span
@@ -10,9 +10,9 @@
           >Eyantra</span
         >
       </NuxtLink>
-      <div class="flex space-x-3 dark:text-white md:order-2 md:space-x-0 rtl:space-x-reverse">
+      <div class="flex space-x-3 dark:text-white md:space-x-0 rtl:space-x-reverse">
         <div class="flex items-center text-xl font-extrabold">
-          <span class="hidden md:block">Time to welcome :</span
+          <span class="hidden lg:block">Time to welcome :</span
           ><UiDropdownMenu>
             <UiDropdownMenuTrigger as-child>
               <UiButton class="hover ml-4 rounded-2xl bg-slate-500 text-lg hover:bg-slate-600"
@@ -43,13 +43,11 @@
           </UiDropdownMenu>
         </div>
       </div>
-      <div class="flex flex-row justify-between text-gray-200">
+      <div class="flex flex-row items-center gap-2 text-gray-200">
         <UiTooltip disable-closing-trigger>
           <template #trigger>
             <UiTooltipTrigger as-child>
-              <UiButton size="icon"
-                ><Icon class="h-6 w-6 font-extrabold" name="lucide:home"
-              /></UiButton>
+              <NuxtLink to="/"><Icon class="h-6 w-6 font-extrabold" name="lucide:home" /></NuxtLink>
             </UiTooltipTrigger>
           </template>
           <template #content>
@@ -58,20 +56,7 @@
             </UiTooltipContent>
           </template>
         </UiTooltip>
-        <UiTooltip disable-closing-trigger>
-          <template #trigger>
-            <UiTooltipTrigger as-child>
-              <UiButton size="icon" @click="showTime"
-                ><Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum"
-              /></UiButton>
-            </UiTooltipTrigger>
-          </template>
-          <template #content class="bg-gray-600">
-            <UiTooltipContent>
-              <p>Start Inauguration</p>
-            </UiTooltipContent>
-          </template>
-        </UiTooltip>
+
         <UiTooltip disable-closing-trigger>
           <template #trigger>
             <UiTooltipTrigger as-child>
@@ -83,6 +68,21 @@
           <template #content class="bg-gray-600">
             <UiTooltipContent>
               <p>Reset Curtains</p>
+            </UiTooltipContent>
+          </template>
+        </UiTooltip>
+        <span>|</span>
+        <UiTooltip disable-closing-trigger>
+          <template #trigger>
+            <UiTooltipTrigger as-child>
+              <UiButton size="icon" @click="showTime"
+                ><Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum"
+              /></UiButton>
+            </UiTooltipTrigger>
+          </template>
+          <template #content class="bg-gray-600">
+            <UiTooltipContent>
+              <p>Start Inauguration</p>
             </UiTooltipContent>
           </template>
         </UiTooltip>
