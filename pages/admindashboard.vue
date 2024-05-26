@@ -1,0 +1,3 @@
+<template>
+  <InaugSessionCard />
+</template>
