@@ -1,10 +1,10 @@
 <template>
-  <div class="no-scrollbar h-screen snap-y snap-mandatory">
+  <div class="no-scrollbar h-screen">
     <!-- chatbot -->
     <!-- <div class="absolute bottom-24 right-32 z-20">
       <Chatrobo @click="toggleChatbox" class="hover:cursor-pointer" />
     </div> -->
-    <section class="flex h-screen snap-start flex-col items-center justify-end bg-slate-800">
+    <section class="flex h-screen flex-col items-center justify-end bg-slate-800">
       <div
         data-aos="zoom-in-up"
         class="z-20 mb-16 bg-gradient-to-r from-slate-200/60 to-slate-200 to-50% bg-clip-text text-center text-3xl font-extrabold text-transparent [text-wrap:balance] md:text-4xl"
@@ -133,7 +133,7 @@
         </div>
       </div>
     </section>
-    <section class="h-screen snap-start">
+    <section class="h-screen">
       <div
         data-aos="zoom-in-up"
         class="relative flex h-screen items-center justify-center overflow-hidden"
@@ -260,9 +260,9 @@
         </div>
       </div>
     </section>
-    <section class="h-screen snap-start">
+    <!-- <section class="h-screen snap-start">
       <div class="relative flex h-screen items-center justify-center bg-gray-900"></div>
-    </section>
+    </section> -->
     <section class="body-font relative h-full text-gray-600">
       <div class="absolute inset-0 bg-gray-300">
         <iframe
@@ -285,26 +285,16 @@
         </div>
       </div>
     </section>
-    <!-- <div class="absolute z-20 bottom-10 right-10">
-      <button
-        @click="togglePopover"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        chat
-      </button>
-       <div v-if="showPopover" class="...">
-        <div class="...">
-          <h3 class="...">Popover click</h3>
-        </div>
-        <div class="...">
-          <p>And here's some amazing content. It's very engaging. Right?</p>
-        </div>
-        <div class="..."></div>
-      </div> 
-    </div> -->
-    <section class="bg-dark relative z-20 overflow-hidden pb-8 pt-20">
+
+    <section class="relative z-20 overflow-hidden bg-gray-900 pb-8 pt-20 text-white">
       <FaqSec />
     </section>
+    <!-- <section class="bg-gray-900">
+      <p class="text-center font-semibold text-white">With 3,800+ colleges already enrolled</p>
+      <div class="flex flex-wrap items-center justify-center gap-5">
+
+      </div>
+    </section> -->
   </div>
 </template>
 

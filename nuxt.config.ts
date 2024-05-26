@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
     "@nuxt/image",
+    "@samk-dev/nuxt-vcalendar"
   ],
 
   routeRules: {

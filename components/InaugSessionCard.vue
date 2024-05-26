@@ -15,13 +15,27 @@
               </div>
               <div class="flex flex-col space-y-1.5">
                 <UiLabel for="framework">Date</UiLabel>
+                <UiDatepicker v-model="today">
+                  <template #default="{ togglePopover }">
+                    <UiButton
+                      variant="outline"
+                      :class="[
+                        !date && 'text-muted-foreground',
+                        'w-full justify-center text-center',
+                      ]"
+                      @click="togglePopover"
+                    >
+                      <Icon name="lucide:calendar" class="h-4 w-4" />
+                      {{ date ? format(date, "MMMM dd, yyyy") : "Select a date" }}
+                    </UiButton>
+                  </template>
+                </UiDatepicker>
               </div>
             </div>
           </UiCardContent>
         </template>
         <template #footer>
-          <UiCardFooter class="flex justify-between">
-            <UiButton type="reset" variant="outline">Cancel</UiButton>
+          <UiCardFooter class="flex justify-end">
             <UiButton type="submit" variant="outline">Create</UiButton>
           </UiCardFooter>
         </template>
@@ -29,3 +43,8 @@
     </form>
   </div>
 </template>
+<script setup>
+  import { format } from "date-fns";
+
+  const date = new Date();
+</script>
