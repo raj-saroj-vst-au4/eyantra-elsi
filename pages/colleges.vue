@@ -284,10 +284,8 @@
   </div>
 </template>
 <script setup>
-  const colleges = computed(() => collegesStore.getColleges);
-  const isLoading = useState("isLoading");
+  const isLoading = ref(true);
   const collegesStore = useCollegesStore();
-  const fetchCount = computed(() => collegesStore.getFetchCount);
   const searchQuery = ref("");
   const currentPage = ref(1);
 
@@ -330,7 +328,7 @@
   };
 
   const filteredColleges = computed(() => {
-    return colleges.value?.filter((college) => {
+    return collegesStore.getColleges?.filter((college) => {
       const searchRegex = new RegExp(searchQuery.value, "i");
       return (
         searchRegex.test(college.college_name) ||
@@ -361,25 +359,8 @@
   };
 
   const fetchColleges = async () => {
-    isLoading.value = true;
-    try {
-      if (fetchCount.value && fetchCount.value < 10) {
-        console.log("Using colleges from pinia", collegesStore.getColleges);
-        colleges.value = collegesStore.getColleges;
-      } else {
-        const response = await useAuthFetch(`/backendapi/fetchelsicolleges`, {
-          method: "POST",
-        });
-        // console.log("refreshing college list ", response);
-        collegesStore.setColleges(response.colleges);
-      }
-      isLoading.value = false;
-    } catch (error) {
-      console.error("Error fetching college data:", error);
-      useSonner["error"]("Error", {
-        description: "Sorry, you donot have access to Fetch Colleges List",
-      });
-    }
+    await collegesStore.fetchColleges();
+    isLoading.value = false;
   };
 
   onBeforeMount(() => {

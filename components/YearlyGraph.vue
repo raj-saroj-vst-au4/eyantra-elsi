@@ -9,35 +9,12 @@
   import { type ApexOptions } from "apexcharts";
 
   const collegesStore = useCollegesStore();
-  const colleges = computed(() => collegesStore.getColleges);
-  const fetchCount = computed(() => collegesStore.getFetchCount);
-  const isLoading = useState("isLoading");
+  const isLoading = ref(true);
 
   const fetchColleges = async () => {
-    isLoading.value = true;
-    try {
-      if (fetchCount.value && fetchCount.value < 10) {
-        console.log("Using colleges from pinia", collegesStore.getColleges);
-        colleges.value = collegesStore.getColleges;
-      } else {
-        const response = await useAuthFetch(`/backendapi/fetchelsicolleges`, {
-          method: "POST",
-        });
-        // console.log("refreshing college list ", response);
-        collegesStore.setColleges(response.colleges);
-      }
-      isLoading.value = false;
-    } catch (error) {
-      console.error("Error fetching college data:", error);
-      useSonner["error"]("Error", {
-        description: "Sorry, you donot have access to Fetch Colleges List",
-      });
-    }
+    await collegesStore.fetchColleges();
+    isLoading.value = false;
   };
-
-  onBeforeMount(() => {
-    fetchColleges();
-  });
   const series = ref<ApexOptions["series"]>([
     {
       name: "Registrations",
@@ -101,7 +78,7 @@
   };
 
   const processCollegeData = () => {
-    const filteredColleges = colleges?.value.filter((college) => college.IS_eLSI === 1);
+    const filteredColleges = collegesStore.getColleges?.filter((college) => college.IS_eLSI === 1);
 
     const years = filteredColleges.map((college) => new Date(college.created_at).getFullYear());
     const minYear = 2012;
@@ -129,8 +106,10 @@
     options.xaxis.categories = yearRange.map((year) => year.toString());
   };
 
-  onMounted(() => {
-    processCollegeData();
+  onBeforeMount(() => {
+    fetchColleges().then(() => {
+      processCollegeData();
+    });
   });
 </script>
 

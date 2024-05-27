@@ -18,6 +18,23 @@ export const useCollegesStore = defineStore("colleges", {
         this.colleges.splice(index, 1, updatedCollege);
       }
     },
+    async fetchColleges() {
+      if (this.fetchCount < 10 && this.colleges) {
+        return;
+      } else {
+        try {
+          const response = await useAuthFetch(`/backendapi/fetchelsicolleges`, {
+            method: "POST",
+          });
+          this.setColleges(response.colleges);
+        } catch (error) {
+          console.error("Error fetching college data:", error);
+          useSonner["error"]("Error", {
+            description: "Sorry, you do not have access to Fetch Colleges List",
+          });
+        }
+      }
+    },
   },
   getters: {
     getColleges: (state) => state.colleges,
