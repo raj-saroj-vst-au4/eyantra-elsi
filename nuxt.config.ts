@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
     "@nuxt/image",
-    "@samk-dev/nuxt-vcalendar"
+    "@samk-dev/nuxt-vcalendar",
   ],
 
   routeRules: {
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     },
   },
 
-  plugins: ["~/plugins/canvas-confetti.js"],
+  plugins: ["~/plugins/canvas-confetti.js", "~/plugins/apex.client.js"],
 
   imports: {
     imports: [

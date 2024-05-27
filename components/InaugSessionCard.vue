@@ -1,14 +1,14 @@
 <template>
-  <div class="flex items-center justify-center font-medium text-white">
+  <div class="flex items-center justify-center font-normal text-white">
     <form>
       <UiCard
-        class="w-[360px] max-w-sm rounded-2xl bg-slate-700"
+        class="w-[280px] max-w-sm rounded-2xl bg-slate-700"
         title="Create Slot"
         description="Create a new lab inauguration slot"
       >
         <template #content>
           <UiCardContent>
-            <div class="grid w-full items-center gap-4">
+            <div class="grid w-full items-center gap-2">
               <div class="flex flex-col space-y-1.5">
                 <UiLabel for="name">Slot Name</UiLabel>
                 <UiInput required id="name" placeholder="Name of this slot" />

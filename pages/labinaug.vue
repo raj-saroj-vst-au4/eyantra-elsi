@@ -1,5 +1,5 @@
 <template>
-  <div id="starter" class="relative z-20 mt-24 items-center text-center">
+  <div id="starter" class="relative z-20 mt-8 items-center text-center">
     <span class="text-4xl font-extrabold"> Welcome to Lab Inauguration </span>
     <img
       id="bot"
@@ -10,7 +10,7 @@
   </div>
   <div id="scene" :class="{ expand: isExpanded }">
     <div id="curtain" :class="{ open: isOpen, close: isClosed }">
-      <h1>TADA!</h1>
+      <h1>WELCOME !</h1>
       <div class="ground"></div>
       <div class="left"></div>
       <div class="right"></div>
