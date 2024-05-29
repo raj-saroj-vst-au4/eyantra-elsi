@@ -34,7 +34,7 @@
         <a href="https://portal.e-yantra.org/" class="mb-5 flex items-center ps-2.5">
           <img src="/images/eyantralogo.svg" class="me-3 h-6 sm:h-7" alt="Eyantra Logo" />
           <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
-            >E-Yantra</span
+            >e-Yantra</span
           >
         </a>
         <hr />
@@ -71,10 +71,6 @@
               <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />
 
               <span class="ms-3 flex-1 whitespace-nowrap">Users</span>
-              <span
-                class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-                >3</span
-              >
             </NuxtLink>
           </li>
           <li v-if="myrole === 'isAdmin'">
@@ -85,10 +81,18 @@
               <Icon name="lucide:flame" class="size-4 text-muted-foreground text-white" />
 
               <span class="ms-3 flex-1 whitespace-nowrap">Lab Inaugration</span>
-              <span
-                class="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-                >3</span
-              >
+              <NuxtLink to="/addlabslot">
+                <button
+                  type="button"
+                  class="inline-flex items-center rounded-xl bg-gray-700 p-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                >
+                  <Icon
+                    name="lucide:calendar-plus"
+                    class="size-4 text-muted-foreground text-white"
+                  />
+                  <span class="sr-only">Icon description</span>
+                </button>
+              </NuxtLink>
             </NuxtLink>
           </li>
           <li>

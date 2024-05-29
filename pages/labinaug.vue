@@ -10,7 +10,7 @@
   </div>
   <div id="scene" :class="{ expand: isExpanded }">
     <div id="curtain" :class="{ open: isOpen, close: isClosed }">
-      <h1>WELCOME !</h1>
+      <h1>WELCOME</h1>
       <div class="ground"></div>
       <div class="left"></div>
       <div class="right"></div>
@@ -147,7 +147,7 @@
     width: 500px;
     height: 150px;
     margin-top: -90px;
-    margin-left: -250px;
+    margin-left: -400px;
     text-align: center;
     font-family: "Open Sans", sans-serif;
     font-size: 10em;

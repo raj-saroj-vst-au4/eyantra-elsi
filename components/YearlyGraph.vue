@@ -5,9 +5,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-  import { type ApexOptions } from "apexcharts";
-
+<script setup>
   const collegesStore = useCollegesStore();
   const isLoading = ref(true);
 
@@ -15,7 +13,7 @@
     await collegesStore.fetchColleges();
     isLoading.value = false;
   };
-  const series = ref<ApexOptions["series"]>([
+  const series = ref([
     {
       name: "Registrations",
       data: [],
@@ -26,7 +24,7 @@
     },
   ]);
 
-  const options: ApexOptions = {
+  const options = {
     stroke: {
       width: 3,
       curve: "smooth",

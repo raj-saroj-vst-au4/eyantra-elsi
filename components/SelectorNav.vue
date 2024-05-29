@@ -60,9 +60,9 @@
         <UiTooltip disable-closing-trigger>
           <template #trigger>
             <UiTooltipTrigger as-child>
-              <UiButton size="icon" @click="closeTime"
-                ><Icon class="h-6 w-6 font-extrabold" name="lucide:refresh-cw"
-              /></UiButton>
+              <button size="icon" @click="closeTime">
+                <Icon class="h-6 w-6 font-extrabold" name="lucide:refresh-cw" />
+              </button>
             </UiTooltipTrigger>
           </template>
           <template #content class="bg-gray-600">
@@ -75,9 +75,9 @@
         <UiTooltip disable-closing-trigger>
           <template #trigger>
             <UiTooltipTrigger as-child>
-              <UiButton size="icon" @click="showTime"
-                ><Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum"
-              /></UiButton>
+              <button size="icon" @click="showTime">
+                <Icon class="h-6 w-6 font-extrabold text-gray-200" name="lucide:drum" />
+              </button>
             </UiTooltipTrigger>
           </template>
           <template #content class="bg-gray-600">
