@@ -1,17 +1,15 @@
 <template>
   <Loader v-if="isLoading" />
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg" v-else>
-    <table class="mt-4 w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
+    <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
       <caption
         class="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white rtl:text-right"
       >
-        ELSI Users
+        ELSI Admins
 
-        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-          Browse a list of ELSI Users partnered with e-Yantra to help you, stay organized, get
-          answers, keep in touch, grow your connections, and more.
-        </p>
+        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Modify Admins</p>
       </caption>
+
       <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">Admin</th>
@@ -55,7 +53,7 @@
               <DialogTrigger
                 class="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-600 px-[15px] font-semibold"
               >
-                Change Role
+                Remove Role
               </DialogTrigger>
               <DialogPortal>
                 <DialogOverlay
@@ -120,45 +118,12 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="bg-gray-700 font-semibold text-gray-900 dark:text-white">
+      <nav
+        class="flex flex-col items-start justify-between space-y-3 p-4 md:flex-row md:items-center md:space-y-0"
+        aria-label="Table navigation"
+      ></nav>
+    </div>
   </div>
 </template>
-<script setup>
-  //get user list from backend
-  import {
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogOverlay,
-    DialogPortal,
-    DialogRoot,
-    DialogTitle,
-    DialogTrigger,
-  } from "radix-vue";
-
-  const users = ref([]);
-  const isLoading = useState("isLoading");
-
-  const fetchpage = async () => {
-    isLoading.value = true;
-    try {
-      const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
-        method: "POST",
-      });
-      // console.log(response);
-      users.value = response.users;
-    } catch (error) {
-      console.error("Error fetching users data:", error);
-    } finally {
-      isLoading.value = false;
-    }
-  };
-  onBeforeMount(async () => {
-    await fetchpage();
-  });
-
-  const checkRole = async (keycloakuid) => {
-    const userData = await useAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
-    console.log("user data recieved", userData);
-    return userData.roles;
-  };
-</script>

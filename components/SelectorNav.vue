@@ -34,7 +34,10 @@
                   "
                 >
                   <div class="flex items-center gap-4">
-                    <UiAvatar :src="h.image" class="h-6 w-6" :alt="h.name" />
+                    <Icon
+                      name="lucide:building-2"
+                      class="size-4 text-muted-foreground text-white"
+                    />
                     <span>{{ h.name }}</span>
                   </div>
                 </UiDropdownMenuCheckboxItem>

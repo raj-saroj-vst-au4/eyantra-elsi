@@ -13,6 +13,7 @@
     "@morev/vue-transitions": "^3.0.2",
     "@nuxt/image": "^1.7.0",
     "@pinia/nuxt": "^0.5.1",
+    "@tanstack/vue-table": "^8.17.3",
     "@vee-validate/nuxt": "^4.12.6",
     "apexcharts": "^3.49.1",
     "canvas-confetti": "^1.9.3",

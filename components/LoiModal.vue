@@ -22,7 +22,7 @@
             />
           </svg>
           <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-            Letter of Intent does not exist !
+            Letter of Intent does not exist yet!
           </h3>
           <div>
             <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"

@@ -118,6 +118,7 @@
           <th scope="col" class="px-4 py-3">District</th>
           <th scope="col" class="px-4 py-3">Pincode</th>
           <th scope="col" class="px-4 py-3">LI Date</th>
+          <th scope="col" class="px-4 py-3">Registration</th>
           <th scope="col" class="px-4 py-3">LOI</th>
           <th scope="col" class="px-4 py-3">Payment</th>
           <th scope="col" class="px-4 py-3">Action</th>
@@ -160,10 +161,36 @@
 
           <td class="px-4 py-3">
             <Icon
-              v-if="(!college.intent_letter || !college.pay_proof) && college.IS_eLSI"
+              v-if="
+                (!college.reg_data || !college.intent_letter || !college.pay_proof) &&
+                college.IS_eLSI
+              "
               name="lucide:circle-alert"
               class="mr-3 size-4 text-muted-foreground text-yellow-300"
             />{{ college.inauguration_date }}
+          </td>
+          <td class="px-4 py-3">
+            <button
+              v-if="!college.reg_data"
+              type="button"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              @click="triggerRegModal(college)"
+            >
+              <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
+              Add
+            </button>
+            <button
+              v-else
+              type="button"
+              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              @click="redirectTo(college.reg_data)"
+            >
+              View
+              <Icon
+                name="lucide:square-arrow-out-up-right"
+                class="ml-1 size-4 text-muted-foreground"
+              />
+            </button>
           </td>
           <td class="px-4 py-3">
             <button
@@ -275,6 +302,12 @@
       :trigger="triggerPaymentModal"
       :data="modalCollegeData"
     />
+    <RegModal
+      v-if="showRegModal"
+      :showRegModal="showRegModal"
+      :trigger="triggerRegModal"
+      :data="modalCollegeData"
+    />
     <CollegeEditorModal
       v-if="showCollegeEditorModal"
       :showCollegeEditorModal="showCollegeEditorModal"
@@ -291,6 +324,7 @@
 
   const modalCollegeData = ref(null);
 
+  const showRegModal = ref(false);
   const showLoiModal = ref(false);
   const showPaymentModal = ref(false);
   const showCollegeEditorModal = ref(false);
@@ -300,6 +334,16 @@
       modalCollegeData.value = null;
     } else {
       showLoiModal.value = true;
+      modalCollegeData.value = clg;
+    }
+  };
+
+  const triggerRegModal = (clg) => {
+    if (showRegModal.value) {
+      showRegModal.value = false;
+      modalCollegeData.value = null;
+    } else {
+      showRegModal.value = true;
       modalCollegeData.value = clg;
     }
   };

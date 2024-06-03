@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="showPaymentModal"
+    v-if="showRegModal"
     class="fixed inset-0 z-50 flex flex-row items-center justify-center overflow-y-auto overflow-x-hidden"
   >
     <div class="relative max-h-full w-full max-w-md p-4">
@@ -22,7 +22,7 @@
             />
           </svg>
           <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-            Payment proof does not exist yet!
+            Registration Data does not exist yet!
           </h3>
           <div>
             <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -32,7 +32,7 @@
               type="text"
               class="mb-4 block w-full rounded-2xl border border-gray-300 bg-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               placeholder="Google Drive PDF Link"
-              v-model="payprooflink"
+              v-model="reglink"
               required
             />
           </div>
@@ -40,7 +40,7 @@
             data-modal-hide="popup-modal"
             type="button"
             class="inline-flex items-center rounded-2xl bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800"
-            @click="updatereg(data.id)"
+            @click="updateLoi(data.id)"
           >
             Update
           </button>
@@ -64,7 +64,7 @@
       type: Object,
       required: true,
     },
-    showPaymentModal: {
+    showRegModal: {
       type: Boolean,
       required: true,
     },
@@ -73,7 +73,7 @@
       required: true,
     },
   });
-  const payprooflink = ref("");
+  const reglink = ref("");
   const collegeStore = useCollegesStore();
   const showMessage = (type, title, content) => {
     useToast().toast({
@@ -82,20 +82,20 @@
       variant: type,
     });
   };
-  const updatereg = async (clgid) => {
-    if (payprooflink.value) {
-      const res = await useAuthFetch(`/backendapi/updatecollege/${clgid}/pay_proof`, {
+  const updateLoi = async (clgid) => {
+    if (reglink.value) {
+      const res = await useAuthFetch(`/backendapi/updatecollege/${clgid}/reg_data`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          pay_proof: payprooflink.value,
+          reg_data: reglink.value,
         }),
       });
       // console.log("backend response", res.college);
       collegeStore.updateCollege(res.college);
-      showMessage("success", "Updated", "Payment proof has been updated");
+      showMessage("success", "Updated", "Reg. link has been updated");
       props.trigger();
     } else {
       // console.log("Please enter a valid link");

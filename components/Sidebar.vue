@@ -71,6 +71,18 @@
               <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />
 
               <span class="ms-3 flex-1 whitespace-nowrap">Users</span>
+              <NuxtLink to="/admins">
+                <button
+                  type="button"
+                  class="inline-flex items-center rounded-xl bg-gray-700 p-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                >
+                  <Icon
+                    name="lucide:square-radical"
+                    class="size-4 text-muted-foreground text-white"
+                  />
+                  <span class="sr-only">Icon description</span>
+                </button>
+              </NuxtLink>
             </NuxtLink>
           </li>
           <li v-if="myrole === 'isAdmin'">
