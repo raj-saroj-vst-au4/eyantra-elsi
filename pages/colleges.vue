@@ -17,62 +17,8 @@
               type="button"
             >
               <span class="sr-only">Filter button</span>
-              Filter
-              <svg
-                class="ms-2.5 h-2.5 w-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
+              Add College
             </button>
-            <!-- Dropdown menu -->
-            <div
-              id="dropdownAction"
-              class="z-50 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:divide-gray-600 dark:bg-gray-700"
-            >
-              <ul
-                class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownActionButton"
-              >
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Reward</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Promote</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Activate account</a
-                  >
-                </li>
-              </ul>
-              <div class="py-1">
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >Delete User</a
-                >
-              </div>
-            </div>
           </div>
           <label for="table-search" class="sr-only">Search</label>
           <div class="relative">

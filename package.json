@@ -43,7 +43,7 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@samk-dev/nuxt-vcalendar": "^1.0.3",
     "@types/crypto-js": "^4.2.2",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^10.10.0",
     "@vueuse/nuxt": "^10.9.0",
     "nuxt-icon": "^0.6.10",
     "prettier": "^3.2.5",
