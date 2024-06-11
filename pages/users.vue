@@ -14,7 +14,7 @@
       </caption>
       <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-6 py-3">Admin</th>
+          <th scope="col" class="px-6 py-3">User</th>
           <th scope="col" class="px-6 py-3">Address</th>
           <th scope="col" class="px-6 py-3">Status</th>
           <th scope="col" class="px-6 py-3">Action</th>
@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="user in users"
+          v-for="user in users.filter((u) => !u.profile.is_admin)"
           :key="user.id"
           class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
         >

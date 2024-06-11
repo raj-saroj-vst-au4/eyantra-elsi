@@ -4,7 +4,7 @@
     data-drawer-toggle="logo-sidebar"
     aria-controls="logo-sidebar"
     type="button"
-    class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
+    class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 sm:hidden"
   >
     <span class="sr-only">Open sidebar</span>
     <svg
@@ -27,13 +27,11 @@
     class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
     aria-label="Sidebar"
   >
-    <div
-      class="flex h-full flex-col justify-between overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-gray-800"
-    >
+    <div class="flex h-full flex-col justify-between overflow-y-auto bg-gray-800 px-3 py-4">
       <div>
         <a href="https://portal.e-yantra.org/" class="mb-5 flex items-center ps-2.5">
           <img src="/images/eyantralogo.svg" class="me-3 h-6 sm:h-7" alt="Eyantra Logo" />
-          <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+          <span class="self-center whitespace-nowrap text-xl font-semibold text-white"
             >e-Yantra</span
           >
         </a>
@@ -43,7 +41,7 @@
           <li>
             <NuxtLink
               to="/"
-              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon
                 name="lucide:layout-dashboard"
@@ -56,7 +54,7 @@
           <li v-if="myrole === 'isAdmin'">
             <NuxtLink
               to="/colleges"
-              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon name="lucide:building-2" class="size-4 text-muted-foreground text-white" />
 
@@ -66,7 +64,7 @@
           <li v-if="myrole === 'isAdmin'">
             <NuxtLink
               to="/users"
-              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon name="lucide:users" class="size-4 text-muted-foreground text-white" />
 
@@ -88,7 +86,7 @@
           <li v-if="myrole === 'isAdmin'">
             <NuxtLink
               to="/labinaug"
-              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon name="lucide:flame" class="size-4 text-muted-foreground text-white" />
 
@@ -110,7 +108,7 @@
           <li>
             <NuxtLink
               to="/profile"
-              class="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon name="lucide:contact-round" class="size-4 text-muted-foreground text-white" />
 

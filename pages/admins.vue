@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="user in users"
+          v-for="user in users.filter((u) => u.profile.is_admin)"
           :key="user.id"
           class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
         >
@@ -53,7 +53,7 @@
               <DialogTrigger
                 class="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-600 px-[15px] font-semibold"
               >
-                Remove Role
+                Change Role
               </DialogTrigger>
               <DialogPortal>
                 <DialogOverlay
@@ -127,3 +127,43 @@
     </div>
   </div>
 </template>
+<script setup>
+  //get user list from backend
+  import {
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogOverlay,
+    DialogPortal,
+    DialogRoot,
+    DialogTitle,
+    DialogTrigger,
+  } from "radix-vue";
+
+  const users = ref([]);
+  const isLoading = useState("isLoading");
+
+  const fetchpage = async () => {
+    isLoading.value = true;
+    try {
+      const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
+        method: "POST",
+      });
+      // console.log(response);
+      users.value = response.users;
+    } catch (error) {
+      console.error("Error fetching users data:", error);
+    } finally {
+      isLoading.value = false;
+    }
+  };
+  onBeforeMount(async () => {
+    await fetchpage();
+  });
+
+  const checkRole = async (keycloakuid) => {
+    const userData = await useAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
+    console.log("user data recieved", userData);
+    return userData.roles;
+  };
+</script>
