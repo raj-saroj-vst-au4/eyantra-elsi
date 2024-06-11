@@ -119,7 +119,8 @@
       </div>
       <div class="flex items-center gap-3 pb-8">
         <div class="flex items-center gap-3">
-          <UiAvatar src="https://robohash.org/{{user.providerInfo.given_name}}" class="size-10" />
+          <!-- <UiAvatar src="https://robohash.org/{{user.providerInfo.given_name}}" class="size-10" /> -->
+          <Icon name="lucide:user" class="size-7 text-muted-foreground text-white" />
           <div>
             <p class="text-sm font-semibold text-white" v-html="user?.providerInfo.name" />
             <p class="text-sm text-muted-foreground text-white" v-html="user?.providerInfo.email" />

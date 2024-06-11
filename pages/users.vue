@@ -53,6 +53,7 @@
           <td class="px-6 py-4">
             <DialogRoot>
               <DialogTrigger
+                @click="checkRole(user.kcuid)"
                 class="inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-600 px-[15px] font-semibold"
               >
                 Change Role
@@ -62,7 +63,7 @@
                   class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30"
                 />
                 <DialogContent
-                  class="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-[100] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
+                  class="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-[100] max-h-[85vh] w-[95vw] max-w-[470px] translate-x-[-50%] translate-y-[-50%] rounded-[14px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
                 >
                   <DialogTitle class="text-mauve12 m-0 text-[17px] font-semibold text-red-500">
                     Change Role
@@ -72,13 +73,13 @@
                   </DialogDescription>
                   <fieldset class="mb-[15px] flex items-center gap-5">
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="name">
-                      Name
+                      Name :
                     </label>
                     <span>{{ user.name }}</span>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="name">
-                      Email
+                      Email :
                     </label>
                     <span>{{ user.email }}</span>
                   </fieldset>
@@ -86,16 +87,26 @@
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="name">
                       Current Role
                     </label>
-                    <span>{{ checkRole(user.kcuid) }}</span>
+                    <span>{{ userRole }}</span>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
-                    <label class="text-grass11 w-[90px] text-right text-[15px]" for="username">
-                      Username
+                    <label class="text-grass11 w-[90px] text-right text-[15px]" for="roleselect">
+                      Change Role
+                    </label>
+                    <select id="roleselect" class="ml-4 h-[35px] w-full px-[10px]">
+                      <option selected>Student</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </fieldset>
+                  <fieldset class="mb-[15px] flex items-center gap-5">
+                    <label class="text-grass11 w-[90px] text-right text-[15px]" for="authcode">
+                      Auth code :
                     </label>
                     <input
-                      id="username"
+                      id="authcode"
                       class="text-grass11 shadow-green7 focus:shadow-green8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                      defaultValue="@peduarte"
+                      :value="authCode"
                     />
                   </fieldset>
                   <div class="mt-[25px] flex justify-end">
@@ -137,6 +148,7 @@
 
   const users = ref([]);
   const isLoading = useState("isLoading");
+  const userRole = ref("");
 
   const fetchpage = async () => {
     isLoading.value = true;
@@ -144,7 +156,7 @@
       const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
         method: "POST",
       });
-      // console.log(response);
+      console.log(response);
       users.value = response.users;
     } catch (error) {
       console.error("Error fetching users data:", error);
@@ -158,7 +170,10 @@
 
   const checkRole = async (keycloakuid) => {
     const userData = await useAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
-    console.log("user data recieved", userData);
-    return userData.roles;
+    // console.log("user data recieved", userData.realmMappings);
+    const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
+    console.log("is a teacher", hasTeacherRole);
+    userRole.value = hasTeacherRole ? "Teacher" : "Student";
+    console.log(userRole.value);
   };
 </script>
