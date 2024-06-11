@@ -106,8 +106,6 @@
 <script setup lang="ts">
   import { format } from "date-fns";
 
-  const { user } = useOidcAuth();
-
   const isLoading = ref(true);
   const collegesStore = useCollegesStore();
   const selectedColleges = ref([]);

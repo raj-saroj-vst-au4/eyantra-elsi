@@ -29,6 +29,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
     } else {
       try {
         // console.log("current acc token valid");
+        // console.log("using token", user.value.accessToken);
         const res = await $fetch(path, {
           ...(options as any),
           headers: {

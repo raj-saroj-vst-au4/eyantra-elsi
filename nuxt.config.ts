@@ -66,7 +66,7 @@ export default defineNuxtConfig({
       maxAge: 1800,
       cookie: {
         sameSite: false,
-        secure: false,
+        secure: true,
       },
     },
   },
