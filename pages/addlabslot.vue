@@ -6,7 +6,7 @@
     >
       LAB Inauguration Slots
     </h1>
-    <div class="mt-8 flex items-center justify-around">
+    <div class="mt-16 flex flex-col justify-around lg:flex-row">
       <form>
         <UiCard
           class="w-[360px] max-w-sm"

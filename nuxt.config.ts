@@ -64,6 +64,10 @@ export default defineNuxtConfig({
       expirationCheck: true,
       expirationThreshold: 3600,
       maxAge: 1800,
+      cookie: {
+        sameSite: "lax",
+        secure: false,
+      },
     },
   },
 
