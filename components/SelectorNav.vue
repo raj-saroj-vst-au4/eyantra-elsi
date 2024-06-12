@@ -12,6 +12,31 @@
       </NuxtLink>
       <div class="flex space-x-3 dark:text-white md:space-x-0 rtl:space-x-reverse">
         <div class="flex items-center text-xl font-extrabold">
+          <span class="hidden lg:block">Slot :</span
+          ><UiDropdownMenu>
+            <UiDropdownMenuTrigger as-child>
+              <UiButton class="hover ml-4 rounded-2xl bg-slate-500 text-lg hover:bg-slate-600"
+                >Demo</UiButton
+              >
+            </UiDropdownMenuTrigger>
+            <UiDropdownMenuContent class="w-max">
+              <UiDropdownMenuLabel label="Choose Slot" class="text-red-600" />
+              <UiDropdownMenuSeparator />
+              <UiDropdownMenuRadioGroup v-model="selectedSlot">
+                <UiDropdownMenuRadioItem
+                  v-for="item in inaugSlots"
+                  :key="item"
+                  :value="item"
+                  :title="item"
+                  :text-value="item"
+                />
+              </UiDropdownMenuRadioGroup>
+            </UiDropdownMenuContent>
+          </UiDropdownMenu>
+        </div>
+      </div>
+      <div class="flex space-x-3 dark:text-white md:space-x-0 rtl:space-x-reverse">
+        <div class="flex items-center text-xl font-extrabold">
           <span class="hidden lg:block">Time to welcome :</span
           ><UiDropdownMenu>
             <UiDropdownMenuTrigger as-child>
@@ -22,15 +47,15 @@
             <UiDropdownMenuContent class="w-max">
               <UiDropdownMenuLabel label="Choose College" class="text-red-600" />
               <UiDropdownMenuSeparator />
-              <template v-for="h in heroList" :key="h.id">
+              <template v-for="h in currentList" :key="h.id">
                 <UiDropdownMenuCheckboxItem
-                  :checked="selectedHeros.includes(h.id)"
+                  :checked="selectedColleges.includes(h.id)"
                   @select="(e) => e.preventDefault()"
                   class="mb-1"
                   @update:checked="
-                    selectedHeros.includes(h.id)
-                      ? selectedHeros.splice(selectedHeros.indexOf(h.id), 1)
-                      : selectedHeros.push(h.id)
+                    selectedColleges.includes(h.id)
+                      ? selectedColleges.splice(selectedColleges.indexOf(h.id), 1)
+                      : selectedColleges.push(h.id)
                   "
                 >
                   <div class="flex items-center gap-4">
@@ -94,7 +119,12 @@
   </nav>
 </template>
 <script setup>
-  const heroList = [
+  const inaugSlots = ref(["Demo"]);
+  const selectedSlot = ref("Demo");
+  const currentList = ref();
+  const selectedColleges = ref([]);
+
+  const collegeList = [
     {
       name: "APS College",
       id: "1",
@@ -113,7 +143,10 @@
         "https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/The-Hulk.The-Incredible-Hulk.webp",
     },
   ];
-  const selectedHeros = ref([]);
+  if (selectedSlot.value == "Demo") {
+    currentList.value = collegeList;
+    console.log("current list", collegeList);
+  }
 
   const props = defineProps({
     showTime: {

@@ -10,7 +10,7 @@
   </div>
   <div id="scene" :class="{ expand: isExpanded }">
     <div id="curtain" :class="{ open: isOpen, close: isClosed }">
-      <h1>WELCOME</h1>
+      <div id="inner-content"><h1>WELCOME</h1></div>
       <div class="ground"></div>
       <div class="left"></div>
       <div class="right"></div>
@@ -139,7 +139,7 @@
     box-shadow: 0 0 100px 100px gray;
   }
 
-  h1 {
+  #inner-content {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -205,7 +205,7 @@
     animation-direction: normal;
   }
 
-  #scene.expand h1 {
+  #scene.expand #inner-content {
     animation-fill-mode: forwards;
     animation-name: text-zoom, text-fade-in, text-glowing;
     animation-duration: 5s, 1s, 1s;
