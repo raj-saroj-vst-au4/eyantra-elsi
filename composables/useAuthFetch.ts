@@ -44,7 +44,10 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
       } catch (err: any) {
         if (err.response.status === 401) {
           console.log("relogging in got 401");
-          return (await login("keycloak")) as T;
+          // return (await login("keycloak")) as T;
+          return useSonner["error"]("401 Err", {
+            description: "Unauthorized Request Error...",
+          });
         } else if (err.response && err.response.status === 403) {
           useSonner["warning"]("WARNING", {
             description: "Please complete signup, redirecting...",

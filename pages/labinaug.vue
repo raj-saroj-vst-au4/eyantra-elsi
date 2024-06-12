@@ -10,7 +10,10 @@
   </div>
   <div id="scene" :class="{ expand: isExpanded }">
     <div id="curtain" :class="{ open: isOpen, close: isClosed }">
-      <div id="inner-content"><h1>WELCOME</h1></div>
+      <div id="inner-content" class="flex h-screen w-screen flex-col justify-center">
+        <h3>Congratulations!!</h3>
+        <hr />
+      </div>
       <div class="ground"></div>
       <div class="left"></div>
       <div class="right"></div>
@@ -140,17 +143,8 @@
   }
 
   #inner-content {
-    position: absolute;
-    left: 50%;
-    top: 50%;
     display: block;
-    width: 500px;
-    height: 150px;
-    margin-top: -90px;
-    margin-left: -400px;
-    text-align: center;
-    font-family: "Open Sans", sans-serif;
-    font-size: 10em;
+    font-size: 5em;
     color: white;
     transform: scale(0.75);
     opacity: 0;
