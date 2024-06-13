@@ -26,6 +26,9 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
       // } catch (e) {
       //   await logout("keycloak");
       // }
+      useSonner["warning"]("WARNING", {
+        description: "Session Expired, refresh the page...",
+      });
     } else {
       try {
         // console.log("current acc token valid");
