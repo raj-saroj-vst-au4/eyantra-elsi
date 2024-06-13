@@ -92,6 +92,7 @@
                     </label>
                     <input
                       id="authcode"
+                      type="password"
                       class="text-grass11 shadow-green7 focus:shadow-green8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                       :value="authCode"
                     />

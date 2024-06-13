@@ -19,13 +19,13 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
   if (user.value.accessToken && loggedIn.value) {
     if (!checkToken(user.value.accessToken)) {
       console.log("refreshing access token");
-      try {
-        await refresh();
-        console.log("trying to refresh access token");
-        // return location.reload();
-      } catch (e) {
-        await logout("keycloak");
-      }
+      // try {
+      //   await refresh();
+      //   console.log("trying to refresh access token");
+      //   // return location.reload();
+      // } catch (e) {
+      //   await logout("keycloak");
+      // }
     } else {
       try {
         // console.log("current acc token valid");
@@ -43,7 +43,7 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
         return res as T;
       } catch (err: any) {
         if (err.response.status === 401) {
-          console.log("relogging in got 401");
+          console.log("relogin got 401");
           // return (await login("keycloak")) as T;
           return useSonner["error"]("401 Err", {
             description: "Unauthorized Request Error...",

@@ -105,6 +105,7 @@
                     </label>
                     <input
                       id="authcode"
+                      type="password"
                       class="text-grass11 shadow-green7 focus:shadow-green8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                       :value="authCode"
                     />
@@ -169,8 +170,8 @@
   });
 
   const checkRole = async (keycloakuid) => {
-    const userData = await useAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
-    // console.log("user data recieved", userData.realmMappings);
+    const userData = await useKCAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
+    console.log("user data recieved", userData.realmMappings);
     const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
     console.log("is a teacher", hasTeacherRole);
     userRole.value = hasTeacherRole ? "Teacher" : "Student";
