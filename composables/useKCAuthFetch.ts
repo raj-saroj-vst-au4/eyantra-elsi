@@ -27,7 +27,7 @@ export async function useKCAuthFetch<T>(path: string, options: UseFetchOptions<T
     } else {
       try {
         // console.log("current acc token valid");
-        // console.log("using token", user.value.accessToken);
+        console.log("using token", accToken);
         const res = await $fetch(path, {
           ...(options as any),
           headers: {
