@@ -318,6 +318,7 @@
   const toggleEdit = (field) => {
     edit[field].value = !edit[field].value;
   };
+
   const collegeStore = useCollegesStore();
   const showMessage = (type, title, content) => {
     useToast().toast({

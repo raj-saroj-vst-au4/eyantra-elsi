@@ -21,13 +21,13 @@ export default defineNuxtConfig({
         to: `${process.env.NUXT_APP_BACKEND_URL}/api/**`,
       },
     },
-    "/keycloakapi/**": {
+    "/hardlogout": {
+      redirect: `${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL}/protocol/openid-connect/logout?post_logout_redirect_uri=${process.env.NUXT_APP_DOMAIN}/auth/keycloak/logout&client_id=${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID}`,
+    },
+    "/kcadminapi/**": {
       proxy: {
         to: `${process.env.NUXT_OIDC_ADMIN_KEYCLOAK_URL}/**`,
       },
-    },
-    "/hardlogout": {
-      redirect: `${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL}/protocol/openid-connect/logout?post_logout_redirect_uri=${process.env.NUXT_APP_DOMAIN}/auth/keycloak/logout&client_id=${process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID}`,
     },
   },
 
@@ -71,7 +71,20 @@ export default defineNuxtConfig({
     },
   },
 
-  plugins: ["~/plugins/canvas-confetti.js", "~/plugins/apex.client.js"],
+  runtimeConfig: {
+    public: {
+      backendUrl: process.env.NUXT_APP_BACKEND_URL,
+      oidcAdminKeycloakUrl: process.env.NUXT_OIDC_ADMIN_KEYCLOAK_URL,
+      oidcProvidersKeycloakBaseUrl: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_BASE_URL,
+      oidcProvidersKeycloakClientId: process.env.NUXT_OIDC_PROVIDERS_KEYCLOAK_CLIENT_ID,
+    },
+  },
+
+  plugins: [
+    "~/plugins/canvas-confetti.js",
+    "~/plugins/apex.client.js",
+    "~/plugins/errorHandler.js",
+  ],
 
   imports: {
     imports: [

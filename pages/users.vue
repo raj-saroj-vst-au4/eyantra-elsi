@@ -1,13 +1,83 @@
 <template>
   <Loader v-if="isLoading" />
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg" v-else>
+    <div
+      class="flex-column flex flex-wrap items-center justify-between space-y-4 bg-white p-4 py-4 dark:bg-gray-900 md:flex-row md:space-y-0"
+    >
+      <div>
+        <UiDropdownMenu>
+          <UiDropdownMenuTrigger asChild>
+            <UiButton variant="outline" class="text-white">Role Options</UiButton>
+          </UiDropdownMenuTrigger>
+          <UiDropdownMenuContent class="w-56">
+            <template v-for="(item, i) in menuitems" :key="i">
+              <UiDropdownMenuLabel v-if="item.label" :label="item.label" />
+              <UiDropdownMenuSeparator v-else-if="item.divider" />
+              <UiDropdownMenuItem
+                v-else-if="item.title && !item.items"
+                :title="item.title"
+                :icon="item.icon"
+                :shortcut="item.shortcut"
+                :disabled="item.disabled"
+              />
+              <UiDropdownMenuSub v-else-if="item.title && item.items">
+                <UiDropdownMenuSubTrigger
+                  :title="item.title"
+                  :icon="item.icon"
+                  :textValue="item.title"
+                />
+                <UiDropdownMenuSubContent>
+                  <template v-for="(child, k) in item.items" :key="`child-${k}`">
+                    <UiDropdownMenuSeparator v-if="child.divider" />
+                    <UiDropdownMenuItem
+                      v-else
+                      :title="child.title"
+                      :icon="child.icon"
+                      :shortcut="child.shortcut"
+                    />
+                  </template>
+                </UiDropdownMenuSubContent>
+              </UiDropdownMenuSub>
+            </template>
+          </UiDropdownMenuContent>
+        </UiDropdownMenu>
+      </div>
+      <label for="table-search" class="sr-only">Search</label>
+      <div class="relative">
+        <div
+          class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
+        >
+          <svg
+            class="h-4 w-4 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          id="table-search-users"
+          class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          placeholder="Search for users"
+        />
+      </div>
+    </div>
     <table class="mt-4 w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
       <caption
         class="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white rtl:text-right"
       >
         ELSI Users
 
-        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+        <p class="mt-1 flex text-sm font-normal text-gray-500 dark:text-gray-400">
           Browse a list of ELSI Users partnered with e-Yantra to help you, stay organized, get
           answers, keep in touch, grow your connections, and more.
         </p>
@@ -87,35 +157,44 @@
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="name">
                       Current Role
                     </label>
-                    <span>{{ userRole }}</span>
+                    <span>{{ userRole || "Loading..." }}</span>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="roleselect">
                       Change Role
                     </label>
-                    <select id="roleselect" class="ml-4 h-[35px] w-full px-[10px]">
-                      <option selected>Student</option>
-                      <option value="teacher">Teacher</option>
-                      <option value="admin">Admin</option>
+                    <select
+                      id="roleselect"
+                      v-model="selectedRole"
+                      @change="console.log(selectedRole, userRole)"
+                      class="ml-4 h-[35px] w-full rounded-lg bg-black px-[10px] text-white"
+                    >
+                      <option selected value="Student">Student</option>
+                      <option value="elsi-teacher">Teacher</option>
+                      <option value="realm-admin">Admin</option>
                     </select>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
                     <label class="text-grass11 w-[90px] text-right text-[15px]" for="authcode">
                       Auth code :
                     </label>
-                    <input
-                      id="authcode"
-                      type="password"
-                      class="text-grass11 shadow-green7 focus:shadow-green8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                      :value="authCode"
-                    />
+                    <UiLabel class="flex flex-col items-start">
+                      <UiPinInput
+                        :input-count="4"
+                        type="number"
+                        class="text-white"
+                        @complete="toast({ title: 'Complete' })"
+                      />
+                    </UiLabel>
                   </fieldset>
                   <div class="mt-[25px] flex justify-end">
                     <DialogClose as-child>
                       <button
-                        class="hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-semibold leading-none"
+                        @click="changeRole(user.kcuid, selectedRole)"
+                        v-if="selectedRole !== userRole"
+                        class="hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-400 px-[15px] font-semibold leading-none"
                       >
-                        Save changes
+                        Commit change
                       </button>
                     </DialogClose>
                   </div>
@@ -149,7 +228,13 @@
 
   const users = ref([]);
   const isLoading = useState("isLoading");
+  const authCode = ref("");
   const userRole = ref("");
+  const selectedRole = ref("");
+  const runtimeConfig = useRuntimeConfig();
+  const showBookmark = ref(true);
+  const showFullUrls = ref(false);
+  const person = ref("1");
 
   const fetchpage = async () => {
     isLoading.value = true;
@@ -170,11 +255,64 @@
   });
 
   const checkRole = async (keycloakuid) => {
-    const userData = await useKCAuthFetch(`/keycloakapi/users/${keycloakuid}/role-mappings`);
+    const userData = await useAuthFetch(`/kcadminapi/users/${keycloakuid}/role-mappings`);
     console.log("user data recieved", userData.realmMappings);
     const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
     console.log("is a teacher", hasTeacherRole);
     userRole.value = hasTeacherRole ? "Teacher" : "Student";
     console.log(userRole.value);
   };
+
+  const getClientId = async () => {
+    const res = await useAuthFetch(
+      `/kcadminapi/clients?clientId=${runtimeConfig.public.oidcProvidersKeycloakClientId}`
+    );
+    // console.log("client id : ", runtimeConfig.public.oidcProvidersKeycloakClientId, res);
+    return res[0].id;
+  };
+  const changeRole = async (keycloakuid, role) => {
+    const clientid = await getClientId();
+    // const response = await useAuthFetch(`/kcadminapi/clients/local-raj/roles`, {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     roles: [
+    //       {
+    //         name: role,
+    //       },
+    //     ],
+    //   }),
+    // });
+    // console.log("change role res ", response);
+  };
+
+  const submitChanges = async (keycloakuid) => {
+    console.log(keycloakuid, authCode.value, selectedRole.value);
+    if (authCode == "1256" && selectedRole) {
+      // await changeRole(keycloakuid, role);
+    } else {
+      return useSonner["error"]("401 Err", {
+        description: "Incorrect Auth Code...",
+      });
+    }
+  };
+
+  const menuitems = [
+    { label: "Role configs" },
+    { divider: true },
+    { title: "Pane User", icon: "ph:keyboard" },
+    { divider: true },
+    { title: "Roles", icon: "ph:users" },
+    { title: "Create Role", icon: "ph:plus-circle" },
+    // {
+    //   title: "Invite Users",
+    //   icon: "ph:user-plus",
+    //   items: [
+    //     { title: "Email", icon: "ph:envelope", shortcut: "⇧⌘E" },
+    //     { title: "Facebook", icon: "logos:facebook", shortcut: "⇧⌘F" },
+    //     { title: "Twitter", icon: "logos:twitter", shortcut: "⇧⌘T" },
+    //     { divider: true },
+    //     ,
+    //   ],
+    // },
+  ];
 </script>

@@ -61,10 +61,12 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
           // return router.push("/completesignup") as T;
         } else if (err.response.status === 500) {
           // console.log("refreshing page");
-          useSonner["error"]("ERROR", { description: "Backend Unreacheable, refreshing page" });
-          setTimeout(() => {
-            return location.reload();
-          }, 2000);
+          useSonner["error"]("ERROR 500", { description: "Backend Error" });
+          // setTimeout(() => {
+          //   return location.reload();
+          // }, 2000);
+        } else if (err.response.status === 413) {
+          return location.replace("/hardreplace");
         } else {
           throw err;
         }
