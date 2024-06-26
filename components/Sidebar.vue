@@ -158,10 +158,8 @@
   import { jwtDecode } from "jwt-decode";
 
   interface Jwt {
-    resource_access: {
-      "realm-management": {
-        roles: string[];
-      };
+    realm_access: {
+      roles: string[];
     };
   }
 
@@ -172,14 +170,15 @@
   const model = ref(false);
   const rawjwt = user.value.accessToken as string;
   const decodedToken: Jwt = jwtDecode(rawjwt);
-  const jwtroles = decodedToken?.resource_access["realm-management"]?.roles;
+  const jwtroles = decodedToken?.realm_access?.roles;
 
   onBeforeMount(() => {
     checkRole();
   });
 
   const checkRole = () => {
-    if (jwtroles.includes("realm-admin")) {
+    console.log(jwtroles);
+    if (jwtroles.includes("eyantra_admin")) {
       console.log("is admin");
       myrole.value = "isAdmin";
     } else if (jwtroles.includes("elsi-teacher")) {

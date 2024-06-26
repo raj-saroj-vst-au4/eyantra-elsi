@@ -45,9 +45,19 @@
                 </div>
               </div>
               <div class="mt-5 grid gap-3" v-else>
-                <div class="flex flex-col gap-1" v-for="role in availRoles" :key="role.id">
-                  <p class="font-semibold leading-none">{{ role.name }}</p>
-                  <p class="text-sm">{{ role.id }}</p>
+                <div
+                  class="flex items-center justify-around"
+                  v-for="role in availRoles"
+                  :key="role.id"
+                >
+                  <span
+                    class="flex h-3 w-3 rounded-full"
+                    :class="role.composite ? 'bg-green-400' : 'bg-red-400'"
+                  ></span>
+                  <div class="flex flex-col">
+                    <p class="font-semibold">{{ role.name }}</p>
+                    <p class="text-xs">{{ role.id }}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,45 +65,54 @@
         </UiPopover>
       </div>
       <div>
-        <button
-          id="dropdownActionButton"
-          data-dropdown-toggle="dropdownAction"
-          class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-          type="button"
-        >
-          <Icon name="ph:plus-circle" class="mr-2 text-xl" />
-          <span class="sr-only">Action button</span>
-          Create Role
-        </button>
+        <UiPopover>
+          <UiPopoverTrigger as-child>
+            <button
+              id="dropdownActionButton"
+              data-dropdown-toggle="dropdownAction"
+              class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+              type="button"
+            >
+              <Icon name="ph:plus-circle" class="mr-2 text-xl" />
+              <span class="sr-only">Action button</span>
+              Create Role
+            </button>
+          </UiPopoverTrigger>
+          <UiPopoverContent class="w-80 p-6">
+            <div class="flex h-full flex-col gap-1.5">
+              <p class="font-semibold leading-none">Create Role</p>
+              <p class="text-sm text-muted-foreground">Add a new role.</p>
+              <div class="mt-5 grid gap-3">
+                <div class="grid grid-cols-3 items-center gap-4">
+                  <UiLabel for="rolename">Role Name</UiLabel>
+                  <UiInput id="rolename" type="text" v-model="newRoleName" class="col-span-2 h-8" />
+                </div>
+                <div class="grid grid-cols-3 items-center gap-4">
+                  <UiLabel for="roledesc">Role Description</UiLabel>
+                  <UiInput id="roledesc" type="text" v-model="newRoleDesc" class="col-span-2 h-8" />
+                </div>
+                <div class="grid grid-cols-3 items-center gap-4">
+                  <UiLabel for="authCode">Auth Code</UiLabel>
+                  <UiPinInput
+                    :input-count="4"
+                    type="number"
+                    class="text-white"
+                    v-model="authCode"
+                  />
+                </div>
+                <UiButton :loading="loadingNewRole" @click="commitNewRole"
+                  ><Icon
+                    class="h-4 w-4 animate-spin"
+                    name="lucide:loader-2"
+                    v-if="loadingNewRole"
+                  />
+                  {{ loadingNewRole ? "Please wait" : "Create Role" }}</UiButton
+                >
+              </div>
+            </div>
+          </UiPopoverContent>
+        </UiPopover>
       </div>
-      <!-- <label for="table-search" class="sr-only">Search</label>
-      <div class="relative">
-        <div
-          class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
-        >
-          <svg
-            class="h-4 w-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-        </div>
-        <input
-          type="text"
-          id="table-search-users"
-          class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          placeholder="Search for users"
-        />
-      </div> -->
     </div>
     <table class="mt-4 w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
       <caption
@@ -207,7 +226,7 @@
                         :input-count="4"
                         type="number"
                         class="text-white"
-                        @complete="toast({ title: 'Complete' })"
+                        v-model="authCode"
                       />
                     </UiLabel>
                   </fieldset>
@@ -252,12 +271,15 @@
 
   const users = ref([]);
   const isLoading = useState("isLoading");
-  const authCode = ref("");
+  const authCode = ref();
   const userRole = ref("");
   const selectedRole = ref("");
   const runtimeConfig = useRuntimeConfig();
   const availRoles = ref();
   const loadingRoles = ref(false);
+  const newRoleName = ref("");
+  const newRoleDesc = ref("");
+  const loadingNewRole = ref(false);
 
   const fetchpage = async () => {
     isLoading.value = true;
@@ -325,7 +347,44 @@
       const res = await useAuthFetch(`/kcadminapi/roles`);
       availRoles.value = res;
       loadingRoles.value = false;
-      return console.log("roles recieved", res);
+      return;
+    }
+  };
+
+  const commitNewRole = async () => {
+    console.log("adding new role");
+    const clientid = await getClientId();
+    if (clientid && authCode.value.join("") == "1256") {
+      loadingNewRole.value = true;
+      console.log(
+        "sending raw data ",
+        JSON.stringify({ name: newRoleName.value, description: newRoleDesc.value, composite: true })
+      );
+      try {
+        const response = await useAuthFetch(`/kcadminapi/roles`, {
+          method: "POST",
+          body: {
+            name: `newRoleName.value`,
+            description: newRoleDesc.value,
+            composite: true,
+          },
+        });
+        loadingNewRole.value = false;
+        useSonner["success"]("Added", {
+          description: `${newRoleName.value} role added to keycloak!`,
+        });
+        console.log("role creation response", response);
+        return (availRoles.value = null);
+      } catch (err) {
+        loadingNewRole.value = false;
+        useSonner["error"]("401 Err", {
+          description: `${err}`,
+        });
+      }
+    } else {
+      return useSonner["error"]("401 Err", {
+        description: "Incorrect Auth Code...",
+      });
     }
   };
 </script>

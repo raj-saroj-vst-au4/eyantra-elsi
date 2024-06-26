@@ -10,10 +10,10 @@
   const roleComponent = ref(null);
   const rawjwt = user.value.accessToken;
   const decodedToken = jwtDecode(rawjwt);
-  const jwtroles = decodedToken?.resource_access["realm-management"]?.roles;
+  const jwtroles = decodedToken?.realm_access.roles;
 
   const checkRole = () => {
-    if (jwtroles.includes("realm-admin")) {
+    if (jwtroles.includes("eyantra_admin")) {
       console.log("is admin");
       return "isAdmin";
     } else if (jwtroles.includes("elsi-teacher")) {
