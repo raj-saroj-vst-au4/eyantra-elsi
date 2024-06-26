@@ -209,12 +209,15 @@
                     <select
                       id="roleselect"
                       v-model="selectedRole"
-                      @change="console.log(selectedRole, userRole)"
                       class="ml-4 h-[35px] w-full rounded-lg bg-black px-[10px] text-white"
                     >
-                      <option selected value="Student">Student</option>
+                      <option :value="role" v-for="role in availRoles" :key="role.id">
+                        {{ role.name }}
+                      </option>
+                      <!-- <option selected value="Student">Student</option>
                       <option value="elsi-teacher">Teacher</option>
-                      <option value="realm-admin">Admin</option>
+                      <option value="elsi-teacher-lead">Teacher Leader</option>
+                      <option value="realm-admin">Admin</option> -->
                     </select>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
@@ -233,8 +236,8 @@
                   <div class="mt-[25px] flex justify-end">
                     <DialogClose as-child>
                       <button
-                        @click="changeRole(user.kcuid, selectedRole)"
-                        v-if="selectedRole !== userRole"
+                        @click="changeRole(user.name, user.kcuid)"
+                        v-if="selectedRole.name !== userRole"
                         class="hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-400 px-[15px] font-semibold leading-none"
                       >
                         Commit change
@@ -301,10 +304,10 @@
 
   const checkRole = async (keycloakuid) => {
     const userData = await useAuthFetch(`/kcadminapi/users/${keycloakuid}/role-mappings`);
-    console.log("user data recieved", userData.realmMappings);
+    // console.log("user data recieved", userData.realmMappings);
     const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
     console.log("is a teacher", hasTeacherRole);
-    userRole.value = hasTeacherRole ? "Teacher" : "Student";
+    userRole.value = hasTeacherRole ? "elsi-teacher" : "Student";
     console.log(userRole.value);
   };
 
@@ -315,28 +318,28 @@
     // console.log("client id : ", runtimeConfig.public.oidcProvidersKeycloakClientId, res);
     return res[0].id;
   };
-  const changeRole = async (keycloakuid, role) => {
+  const changeRole = async (username, keycloakuid) => {
+    console.log(username, keycloakuid, selectedRole.value.name);
     const clientid = await getClientId();
-    // const response = await useAuthFetch(`/kcadminapi/clients/local-raj/roles`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     roles: [
-    //       {
-    //         name: role,
-    //       },
-    //     ],
-    //   }),
-    // });
-    // console.log("change role res ", response);
-  };
-
-  const submitChanges = async (keycloakuid) => {
-    console.log(keycloakuid, authCode.value, selectedRole.value);
-    if (authCode == "1256" && selectedRole) {
-      // await changeRole(keycloakuid, role);
-    } else {
-      return useSonner["error"]("401 Err", {
-        description: "Incorrect Auth Code...",
+    // const res = await useAuthFetch(`/kcadminapi/groups/${keycloakuid}/role-mappings`);
+    // console.log("all mappings of user ", res);
+    try {
+      const response = await useAuthFetch(`/kcadminapi/users/${keycloakuid}/role-mappings/realm`, {
+        method: "POST",
+        body: [
+          {
+            id: `${selectedRole.value.id}`,
+            name: `${selectedRole.value.name}`,
+          },
+        ],
+      });
+      useSonner["success"]("Added", {
+        description: `${selectedRole.value.name} role given to ${username}`,
+      });
+      console.log("add role to user res", response);
+    } catch (err) {
+      useSonner["error"]("401 Err", {
+        description: `${err}`,
       });
     }
   };
@@ -387,4 +390,8 @@
       });
     }
   };
+
+  onMounted(async () => {
+    await getAvailRoles();
+  });
 </script>
