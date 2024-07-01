@@ -3,3 +3,7 @@
     <YearlyGraph />
   </div>
 </template>
+<script>
+  const { user } = useOidcAuth();
+  console.log(user.value);
+</script>

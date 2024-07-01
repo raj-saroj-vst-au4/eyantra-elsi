@@ -123,7 +123,7 @@
           <Icon name="lucide:user" class="size-7 text-muted-foreground text-white" />
           <div>
             <p class="text-sm font-semibold text-white" v-html="user?.providerInfo.name" />
-            <p class="text-sm text-muted-foreground text-white" v-html="user?.providerInfo.email" />
+            <p class="text-xs text-muted-foreground text-white" v-html="user?.providerInfo.email" />
           </div>
         </div>
         <UiAlertDialog v-model:open="model">
