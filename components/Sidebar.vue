@@ -63,6 +63,16 @@
           </li>
           <li v-if="myrole === 'isAdmin'">
             <NuxtLink
+              to="/createworkshop"
+              class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
+            >
+              <Icon name="lucide:ticket-check" class="size-4 text-muted-foreground text-white" />
+
+              <span class="ms-3 flex-1 whitespace-nowrap">Publish Workshop</span>
+            </NuxtLink>
+          </li>
+          <li v-if="myrole === 'isAdmin'">
+            <NuxtLink
               to="/users"
               class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
@@ -105,6 +115,7 @@
               </NuxtLink>
             </NuxtLink>
           </li>
+
           <li>
             <NuxtLink
               to="/profile"

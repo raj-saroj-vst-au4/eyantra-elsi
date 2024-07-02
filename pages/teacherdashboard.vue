@@ -2,16 +2,18 @@
   <Loader v-if="isLoading" />
   <UiContainer class="py-10" v-else>
     <p class="mb-3 text-center font-semibold text-primary lg:text-left">
-      Welcome Back, {{ userdata.name }}
+      Welcome Back, {{ userdata?.name }}
     </p>
-    <h3 class="mb-4 text-center text-3xl font-semibold lg:mb-5 lg:text-left lg:text-4xl">
-      {{ collegedata.college_name }}
+    <h3
+      class="mb-4 text-center text-3xl font-semibold dark:text-white lg:mb-5 lg:text-left lg:text-4xl"
+    >
+      {{ collegedata?.college_name }}
     </h3>
     <p
       class="mb-10 max-w-[760px] text-center text-lg text-muted-foreground lg:mb-16 lg:text-left lg:text-xl"
     >
-      Everything you need to build modern UI and great products. We've done all the heavy lifting so
-      you don't have to — the perfect starting point for any project.
+      <!-- Everything you need to build modern UI and great products. We've done all the heavy lifting so
+      you don't have to — the perfect starting point for any project. -->
     </p>
     <div class="grid grid-cols-1 lg:grid-cols-2 lg:py-16">
       <div
@@ -41,7 +43,7 @@
   </UiContainer>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   const isLoading = ref(false);
   const userdata = ref();
   const collegedata = ref();
@@ -53,8 +55,8 @@
       const responsedata = await useAuthFetch(
         `/backendapi/getuserdata/${user.value.providerInfo.sub}`
       );
-      userdata.value = responsedata["data"].user;
-      collegedata.value = responsedata["data"].college;
+      userdata.value = responsedata["data"]?.user;
+      collegedata.value = responsedata["data"]?.college;
       // console.log("getting user data for ", user.value.providerInfo.sub, responsedata);
     } catch (err) {
       return useSonner["error"]("401 Err", {
@@ -63,7 +65,7 @@
     }
   };
 
-  onMounted(() => {
-    getTeacherData();
+  onMounted(async () => {
+    await getTeacherData();
   });
 </script>
