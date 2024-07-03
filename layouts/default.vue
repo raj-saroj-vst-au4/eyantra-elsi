@@ -2,8 +2,8 @@
   <!-- <Sidebar :userData="userStore.user" /> -->
 
   <Sidebar />
-  <div class="min-h-screen bg-gray-900 p-4 sm:ml-64">
-    <slot class="p-4 sm:ml-64" :isLoading="isLoading" />
+  <div class="min-h-screen bg-gray-900 p-0 sm:ml-64 md:p-4">
+    <slot class="sm:ml-64" :isLoading="isLoading" />
   </div>
 </template>
 <script setup>

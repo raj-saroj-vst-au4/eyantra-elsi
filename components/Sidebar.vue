@@ -1,31 +1,16 @@
 <template>
   <button
-    data-drawer-target="logo-sidebar"
-    data-drawer-toggle="logo-sidebar"
-    aria-controls="logo-sidebar"
+    @click="toggleSidebar"
     type="button"
     class="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 sm:hidden"
   >
     <span class="sr-only">Open sidebar</span>
-    <svg
-      class="h-6 w-6"
-      aria-hidden="true"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        clip-rule="evenodd"
-        fill-rule="evenodd"
-        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-      ></path>
-    </svg>
+    <Icon name="lucide:layout-dashboard" class="mb-2 size-4 text-muted-foreground" />
   </button>
 
   <aside
     id="logo-sidebar"
     class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
-    aria-label="Sidebar"
   >
     <div class="flex h-full flex-col justify-between overflow-y-auto bg-gray-800 px-3 py-4">
       <div>
@@ -63,12 +48,12 @@
           </li>
           <li v-if="myrole === 'isAdmin'">
             <NuxtLink
-              to="/createworkshop"
+              to="/workshop"
               class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"
             >
               <Icon name="lucide:ticket-check" class="size-4 text-muted-foreground text-white" />
 
-              <span class="ms-3 flex-1 whitespace-nowrap">Publish Workshop</span>
+              <span class="ms-3 flex-1 whitespace-nowrap">Workshops</span>
             </NuxtLink>
           </li>
           <li v-if="myrole === 'isAdmin'">
@@ -177,6 +162,7 @@
   const { user, logout } = useOidcAuth();
   const router = useRouter();
   const myrole = ref("isStudent");
+  const sidebarVisible = ref(true);
 
   const model = ref(false);
   const rawjwt = user.value.accessToken as string;
@@ -186,6 +172,11 @@
   onBeforeMount(() => {
     checkRole();
   });
+
+  const toggleSidebar = () => {
+    console.log("clicked and status", sidebarVisible.value);
+    sidebarVisible.value = !sidebarVisible.value;
+  };
 
   const checkRole = () => {
     console.log(jwtroles);
@@ -203,6 +194,10 @@
 
   const hardLogout = async () => {
     router.push("/hardlogout");
-    // return logout("keycloak");
   };
 </script>
+<style scoped>
+  .sidebar {
+    transition: transform 0.3s ease-in-out;
+  }
+</style>

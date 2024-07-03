@@ -304,7 +304,6 @@
 
   const checkRole = async (keycloakuid) => {
     const userData = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings`);
-    // console.log("user data recieved", userData.realmMappings);
     const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
     console.log("is a teacher", hasTeacherRole);
     userRole.value = hasTeacherRole ? "elsi-teacher" : "Student";
@@ -319,7 +318,6 @@
   };
   const changeRole = async (username, keycloakuid) => {
     console.log(username, keycloakuid, selectedRole.value.name);
-    const clientid = await getClientId();
     try {
       const response = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings/realm`, {
         method: "POST",

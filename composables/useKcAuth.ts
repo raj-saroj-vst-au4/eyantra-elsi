@@ -16,12 +16,12 @@ export async function useKcAuthFetch<T>(path: string, options: UseFetchOptions<T
   // check if jwt is expired
   if (user.value.accessToken && loggedIn.value) {
     if (!checkToken(user.value.accessToken)) {
-      console.log("refreshing access token");
+      // console.log("refreshing access token");
       await refresh();
-      console.log("trying to refresh access token");
-      useSonner["warning"]("WARNING", {
-        description: "Session Expired, refresh the page...",
-      });
+      // console.log("trying to refresh access token");
+      // useSonner["warning"]("WARNING", {
+      //   description: "Session Expired, refresh the page...",
+      // });
     } else {
       try {
         const res = await $fetch(runtimeConfig.public.oidcAdminKeycloakUrl + path, {
