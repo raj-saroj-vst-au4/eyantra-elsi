@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware((to, next) => {
   };
 
   if (
-    user &&
+    user.value?.accessToken &&
     (to.path == "/addlabslot" ||
       to.path == "/labinaug" ||
       to.path == "/colleges" ||
