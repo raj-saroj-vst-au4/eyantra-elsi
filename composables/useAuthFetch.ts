@@ -20,8 +20,8 @@ export async function useAuthFetch<T>(path: string, options: UseFetchOptions<T> 
     if (!checkToken(user.value.accessToken)) {
       console.log("refreshing access token");
       // try {
-      //   await refresh();
-      //   console.log("trying to refresh access token");
+      await refresh();
+      console.log("trying to refresh access token");
       //   // return location.reload();
       // } catch (e) {
       //   await logout("keycloak");
