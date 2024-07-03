@@ -22,10 +22,11 @@ export default defineNuxtRouteMiddleware((to, next) => {
     to.path == "/admins"
   ) {
     const jwtroles = checkRole();
+    console.log("jwt check role output", jwtroles);
     if (jwtroles && jwtroles?.includes("eyantra_admin")) {
       return;
     } else {
-      return navigateTo("/");
+      return navigateTo("/notfound");
     }
   }
 });

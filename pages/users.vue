@@ -303,7 +303,7 @@
   });
 
   const checkRole = async (keycloakuid) => {
-    const userData = await useAuthFetch(`/kcadminapi/users/${keycloakuid}/role-mappings`);
+    const userData = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings`);
     // console.log("user data recieved", userData.realmMappings);
     const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
     console.log("is a teacher", hasTeacherRole);
@@ -312,19 +312,16 @@
   };
 
   const getClientId = async () => {
-    const res = await useAuthFetch(
-      `/kcadminapi/clients?clientId=${runtimeConfig.public.oidcProvidersKeycloakClientId}`
+    const res = await useKcAuthFetch(
+      `/clients?clientId=${runtimeConfig.public.oidcProvidersKeycloakClientId}`
     );
-    // console.log("client id : ", runtimeConfig.public.oidcProvidersKeycloakClientId, res);
     return res[0].id;
   };
   const changeRole = async (username, keycloakuid) => {
     console.log(username, keycloakuid, selectedRole.value.name);
     const clientid = await getClientId();
-    // const res = await useAuthFetch(`/kcadminapi/groups/${keycloakuid}/role-mappings`);
-    // console.log("all mappings of user ", res);
     try {
-      const response = await useAuthFetch(`/kcadminapi/users/${keycloakuid}/role-mappings/realm`, {
+      const response = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings/realm`, {
         method: "POST",
         body: [
           {
@@ -347,7 +344,7 @@
   const getAvailRoles = async () => {
     if (!availRoles.value) {
       loadingRoles.value = true;
-      const res = await useAuthFetch(`/kcadminapi/roles`);
+      const res = await useKcAuthFetch(`/roles`);
       availRoles.value = res;
       loadingRoles.value = false;
       return;
@@ -364,7 +361,7 @@
         JSON.stringify({ name: newRoleName.value, description: newRoleDesc.value, composite: true })
       );
       try {
-        const response = await useAuthFetch(`/kcadminapi/roles`, {
+        const response = await useKcAuthFetch(`/roles`, {
           method: "POST",
           body: {
             name: `newRoleName.value`,
