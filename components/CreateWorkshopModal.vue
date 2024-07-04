@@ -23,35 +23,51 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
+              <div class="mb-2 flex flex-col gap-2">
+                <label class="ml-2 text-white">Workshop name :</label>
+                <input
+                  v-model="workshopname"
+                  class="rounded-lg bg-gray-900 p-2 text-white focus:border-red-500"
+                />
+              </div>
               <div class="mb-4 grid grid-cols-2 gap-4">
-                <div class="flex flex-col">
-                  <label class="text-white">Country :</label>
-                  <UiSelect v-bind="componentField">
-                    <UiSelectTrigger placeholder="Select Country" />
-                    <UiSelectContent>
-                      <UiSelectGroup>
-                        <UiSelectItem v-for="(e, i) in countries" :key="i" :value="e" :text="e" />
-                      </UiSelectGroup>
-                    </UiSelectContent>
-                  </UiSelect>
+                <div class="flex flex-col gap-2">
+                  <label class="ml-2 text-white">Country :</label>
+                  <select
+                    v-model="selectedCountry"
+                    @change="fetchStates(selectedCountry)"
+                    class="block w-full rounded-lg border border-gray-400 bg-gray-900 p-2.5 text-sm text-white focus:border-blue-500 focus:ring-blue-500"
+                  >
+                    <option :value="null" selected>Select Country</option>
+                    <option v-for="country in countries" :key="country.id" :value="country">
+                      {{ country }}
+                    </option>
+                  </select>
                 </div>
-                <div class="flex flex-col">
-                  <label class="text-white">State :</label>
-                  <UiSelect v-bind="componentField">
-                    <UiSelectTrigger placeholder="Select State" />
-                    <UiSelectContent>
-                      <UiSelectGroup>
-                        <UiSelectItem v-for="(s, i) in states" :key="i" :value="s" :text="s" />
-                      </UiSelectGroup>
-                    </UiSelectContent>
-                  </UiSelect>
+                <div class="flex flex-col gap-2">
+                  <label class="ml-2 text-white">State :</label>
+                  <select
+                    v-model="selectedState"
+                    @change="fetchColleges(selectedCountry, selectedState)"
+                    class="block w-full rounded-lg border border-gray-400 bg-gray-900 p-2.5 text-sm text-white focus:border-blue-500 focus:ring-blue-500"
+                  >
+                    <option :value="null" selected>College State</option>
+                    <option
+                      v-if="selectedCountry"
+                      v-for="collegestate in states"
+                      :key="collegestate.id"
+                      :value="collegestate"
+                    >
+                      {{ collegestate }}
+                    </option>
+                  </select>
                 </div>
               </div>
-              <div class="mb-4 grid grid-cols-1">
-                <label class="text-white">Choose College :</label>
+              <div class="mb-4 grid grid-cols-1 gap-2">
+                <label class="ml-2 text-white">Choose College :</label>
                 <UiAutocomplete>
                   <UiAutocompleteAnchor>
-                    <UiAutocompleteInput />
+                    <UiAutocompleteInput v-model="selectedCollege" />
                     <UiAutocompleteTrigger>
                       <Icon name="lucide:chevron-down" class="size-4 text-muted-foreground" />
                     </UiAutocompleteTrigger>
@@ -61,8 +77,8 @@
                     <UiAutocompleteEmpty />
                     <UiAutocompleteGroup>
                       <UiAutocompleteLabel>Colleges</UiAutocompleteLabel>
-                      <template v-for="(c, i) in colleges" :key="f">
-                        <UiAutocompleteItem :value="f" icon="lucide:check">{{
+                      <template v-for="(c, i) in colleges" :key="i" class="text-white">
+                        <UiAutocompleteItem :value="c" icon="lucide:check">{{
                           c
                         }}</UiAutocompleteItem>
                       </template>
@@ -71,8 +87,8 @@
                 </UiAutocomplete>
               </div>
               <div class="mb-4 grid grid-cols-2">
-                <div class="flex flex-col">
-                  <label class="text-white">Start Date :</label>
+                <div class="flex flex-col gap-2">
+                  <label class="ml-2 text-white">Start Date :</label>
                   <UiDatepicker v-model="date">
                     <template #default="{ togglePopover }">
                       <UiButton
@@ -86,8 +102,8 @@
                     </template>
                   </UiDatepicker>
                 </div>
-                <div class="flex flex-col">
-                  <label class="text-white">End Date :</label>
+                <div class="flex flex-col gap-2">
+                  <label class="ml-2 text-white">End Date :</label>
                   <UiDatepicker v-model="date">
                     <template #default="{ togglePopover }">
                       <UiButton
@@ -112,10 +128,10 @@
                 </button>
                 <button
                   type="button"
-                  class="ms-3 rounded-2xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-red-400 hover:text-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+                  class="ms-3 rounded-2xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-red-600 hover:text-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
                   @click="trigger"
                 >
-                  No, cancel
+                  Cancel
                 </button>
               </div>
             </div>
@@ -141,6 +157,12 @@
   const countries = ref();
   const states = ref();
   const colleges = ref();
+  const workshopname = ref();
+  const selectedCountry = ref(null);
+  const selectedState = ref(null);
+  const selectedCollege = ref(null);
+
+  const workshops = ref();
 
   const fetchCountries = async () => {
     try {
@@ -156,7 +178,8 @@
     try {
       const response = await useAuthFetch(`/backendapi/getstates/${country}`);
       // const statesJson = await response.json();
-      collegestates.value = response.states;
+      //   console.log(response, country);
+      states.value = response.states;
     } catch (error) {
       console.error("Error fetching states:", error);
     }
@@ -166,7 +189,8 @@
     try {
       const res = await useAuthFetch(`/backendapi/getcolleges/${country}/${state}`);
       // const clgJson = await res.json();
-      colleges.value = res.colleges;
+      console.log(res.colleges);
+      colleges.value = res.colleges.map((college) => college.college_name);
     } catch (err) {
       console.log("error fetching colleges:", err);
     }
