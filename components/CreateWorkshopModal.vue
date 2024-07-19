@@ -15,7 +15,7 @@
               <button
                 type="button"
                 class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                @click="trigger"
+                @click="triggerWorkshopModal"
               >
                 <Icon name="lucide:x" class="size-4 text-muted-foreground" />
                 <span class="sr-only">Close modal</span>
@@ -155,7 +155,7 @@
                 <button
                   type="button"
                   class="ms-3 rounded-lg border border-gray-200 bg-white p-2 px-5 text-sm font-medium text-gray-900 hover:bg-red-600 hover:text-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                  @click="trigger"
+                  @click="triggerWorkshopModal"
                 >
                   Cancel
                 </button>
@@ -176,7 +176,11 @@
       type: Boolean,
       required: true,
     },
-    trigger: {
+    triggerWorkshopModal: {
+      type: Function,
+      required: true,
+    },
+    fetchWorkshops: {
       type: Function,
       required: true,
     },
@@ -198,8 +202,6 @@
   const selectedFalicitator = ref();
   const startdate = ref();
   const enddate = ref();
-
-  const workshops = ref();
 
   const fetchCountries = async () => {
     try {
@@ -267,10 +269,12 @@
         useSonner["success"]("Added", {
           description: response.message,
         });
-        trigger();
+        await fetchWorkshops();
       }
     } catch (error) {
       console.error("Error creating workshop:", error);
+    } finally {
+      triggerWorkshopModal();
     }
   };
 </script>

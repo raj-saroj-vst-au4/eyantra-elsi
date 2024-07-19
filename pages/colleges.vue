@@ -72,10 +72,6 @@
       </thead>
 
       <tbody class="overflow-x-auto">
-        <!-- <tr>
-          <td>colleges</td>
-          <td>colleges</td>
-        </tr> -->
         <tr
           v-for="college in paginatedColleges"
           :key="college.id"
