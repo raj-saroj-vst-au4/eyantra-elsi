@@ -16,7 +16,6 @@ export default defineNuxtRouteMiddleware((to, next) => {
     to.path == "/addlabslot" ||
     to.path == "/labinaug" ||
     to.path == "/colleges" ||
-    to.path == "/createworkshop" ||
     to.path == "/users" ||
     to.path == "/addlabslot" ||
     to.path == "/admins"

@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="user in users.filter((u) => u.profile.is_admin)"
+          v-for="user in users.filter((u) => u.profile.curr_role == 'eyantra_admin')"
           :key="user.id"
           class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
         >

@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
     "nuxt-icon",
-    "raj-nuxt3-oidc-auth",
+    "nuxt-oidc-auth",
     "@vee-validate/nuxt",
     "@morev/vue-transitions/nuxt",
     "@nuxt/image",
@@ -55,8 +55,8 @@ export default defineNuxtConfig({
       customLoginPage: true,
     },
     session: {
-      automaticRefresh: true,
-      expirationCheck: true,
+      // automaticRefresh: true,
+      // expirationCheck: true,
       expirationThreshold: 3600,
       maxAge: 1800,
       cookie: {

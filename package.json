@@ -10,6 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@formkit/addons": "^1.6.5",
+    "@formkit/themes": "^1.6.5",
+    "@formkit/vue": "^1.6.5",
     "@morev/vue-transitions": "^3.0.2",
     "@nuxt/image": "^1.7.0",
     "@pinia/nuxt": "^0.5.1",
@@ -28,7 +31,7 @@
     "nuxt": "^3.11.2",
     "pinia": "^2.1.7",
     "radix-vue": "^1.7.2",
-    "raj-nuxt3-oidc-auth": "^0.12.6",
+    "nuxt-oidc-auth": "^0.12.0",
     "tailwind-variants": "^0.2.1",
     "vue": "^3.4.21",
     "vue-apexcharts": "^1.6.2",

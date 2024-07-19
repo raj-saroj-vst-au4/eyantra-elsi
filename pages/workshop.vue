@@ -61,7 +61,6 @@
       showWorkshopModal.value = false;
     } else {
       showWorkshopModal.value = true;
-      modalCollegeData.value = clg;
     }
   };
   const headline = "Design";

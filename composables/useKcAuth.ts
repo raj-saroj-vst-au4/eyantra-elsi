@@ -15,8 +15,9 @@ export async function useKcAuthFetch<T>(path: string, options: UseFetchOptions<T
 
   // check if jwt is expired
   if (user.value.accessToken && loggedIn.value) {
+    console.log("token valid : ", checkToken(user.value.accessToken));
     if (!checkToken(user.value.accessToken)) {
-      // console.log("refreshing access token");
+      console.log("refreshing kc access token");
       await refresh();
       // console.log("trying to refresh access token");
       // useSonner["warning"]("WARNING", {

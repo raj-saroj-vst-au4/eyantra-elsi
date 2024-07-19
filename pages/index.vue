@@ -17,7 +17,7 @@
       console.log("is admin");
       return "isAdmin";
     } else if (jwtroles.includes("elsi-teacher")) {
-      console.log(" is not admin but teacher");
+      console.log("is not admin but teacher");
       return "isTeacher";
     } else {
       console.log("is student");

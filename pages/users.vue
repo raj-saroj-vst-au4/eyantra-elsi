@@ -135,7 +135,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="user in users.filter((u) => !u.profile.is_admin)"
+          v-for="user in users?.filter((u) => u.profile.curr_role !== 'eyantra_admin')"
           :key="user.id"
           class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
         >
@@ -211,13 +211,14 @@
                       v-model="selectedRole"
                       class="ml-4 h-[35px] w-full rounded-lg bg-black px-[10px] text-white"
                     >
-                      <option :value="role" v-for="role in availRoles" :key="role.id">
+                      <option
+                        :value="role"
+                        v-for="role in availRoles"
+                        :key="role.id"
+                        :disabled="!role.composite"
+                      >
                         {{ role.name }}
                       </option>
-                      <!-- <option selected value="Student">Student</option>
-                      <option value="elsi-teacher">Teacher</option>
-                      <option value="elsi-teacher-lead">Teacher Leader</option>
-                      <option value="realm-admin">Admin</option> -->
                     </select>
                   </fieldset>
                   <fieldset class="mb-[15px] flex items-center gap-5">
@@ -236,7 +237,7 @@
                   <div class="mt-[25px] flex justify-end">
                     <DialogClose as-child>
                       <button
-                        @click="changeRole(user.name, user.kcuid)"
+                        @click="changeUserRole(user.name, user.kcuid)"
                         v-if="selectedRole.name !== userRole"
                         class="hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-red-400 px-[15px] font-semibold leading-none"
                       >
@@ -272,7 +273,7 @@
     DialogTrigger,
   } from "radix-vue";
 
-  const users = ref([]);
+  const users = ref();
   const isLoading = useState("isLoading");
   const authCode = ref();
   const userRole = ref("");
@@ -284,7 +285,7 @@
   const newRoleDesc = ref("");
   const loadingNewRole = ref(false);
 
-  const fetchpage = async () => {
+  const fetchUsers = async () => {
     isLoading.value = true;
     try {
       const response = await useAuthFetch(`/backendapi/fetchelsiusers`, {
@@ -299,15 +300,20 @@
     }
   };
   onBeforeMount(async () => {
-    await fetchpage();
+    await fetchUsers();
   });
 
   const checkRole = async (keycloakuid) => {
     const userData = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings`);
-    const hasTeacherRole = userData.realmMappings.some((role) => role.name == "elsi-teacher");
-    console.log("is a teacher", hasTeacherRole);
-    userRole.value = hasTeacherRole ? "elsi-teacher" : "Student";
-    console.log(userRole.value);
+
+    const roles = userData?.realmMappings
+      ?.filter((role) => role.name.startsWith("elsi-"))
+      ?.map((role) => role.name);
+
+    roles.length ? (userRole.value = roles) : (userRole.value = "Student");
+
+    console.log("userroles", roles);
+    // console.log(userRole.value);
   };
 
   const getClientId = async () => {
@@ -316,8 +322,8 @@
     );
     return res[0].id;
   };
-  const changeRole = async (username, keycloakuid) => {
-    console.log(username, keycloakuid, selectedRole.value.name);
+  const changeUserRole = async (username, keycloakuid) => {
+    // console.log(username, keycloakuid, selectedRole.value.name);
     try {
       const response = await useKcAuthFetch(`/users/${keycloakuid}/role-mappings/realm`, {
         method: "POST",
@@ -328,14 +334,18 @@
           },
         ],
       });
+
       useSonner["success"]("Added", {
         description: `${selectedRole.value.name} role given to ${username}`,
       });
-      console.log("add role to user res", response);
+      console.log("add role to user ", username, response);
+      return fetchUsers();
     } catch (err) {
       useSonner["error"]("401 Err", {
         description: `${err}`,
       });
+    } finally {
+      authCode.value = null;
     }
   };
 
@@ -344,8 +354,7 @@
       loadingRoles.value = true;
       const res = await useKcAuthFetch(`/roles`);
       availRoles.value = res;
-      loadingRoles.value = false;
-      return;
+      return (loadingRoles.value = false);
     }
   };
 
@@ -362,7 +371,7 @@
         const response = await useKcAuthFetch(`/roles`, {
           method: "POST",
           body: {
-            name: `newRoleName.value`,
+            name: newRoleName.value,
             description: newRoleDesc.value,
             composite: true,
           },
@@ -378,6 +387,9 @@
         useSonner["error"]("401 Err", {
           description: `${err}`,
         });
+      } finally {
+        (newRoleName.value = ""), (newRoleDesc.value = ""), (authCode.value = null);
+        await getAvailRoles();
       }
     } else {
       return useSonner["error"]("401 Err", {
