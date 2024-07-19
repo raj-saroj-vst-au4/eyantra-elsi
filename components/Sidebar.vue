@@ -46,7 +46,7 @@
               <span class="ms-3 flex-1 whitespace-nowrap">Colleges</span>
             </NuxtLink>
           </li>
-          <li v-if="myrole === 'isAdmin'">
+          <li v-if="myrole === 'isAdmin' || myrole === 'isTeacher'">
             <NuxtLink
               to="/workshop"
               class="group flex items-center rounded-lg p-2 text-white hover:bg-gray-700"

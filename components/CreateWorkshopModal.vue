@@ -263,8 +263,6 @@
         }),
       });
       console.log(response);
-      // workshops.value = response.workshops;
-      // trigger();
       if (response.status == "success") {
         useSonner["success"]("Added", {
           description: response.message,
