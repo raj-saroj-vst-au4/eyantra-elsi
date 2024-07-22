@@ -267,12 +267,12 @@
         useSonner["success"]("Added", {
           description: response.message,
         });
-        await fetchWorkshops();
+        await props.fetchWorkshops();
       }
     } catch (error) {
       console.error("Error creating workshop:", error);
     } finally {
-      triggerWorkshopModal();
+      props.triggerWorkshopModal();
     }
   };
 </script>

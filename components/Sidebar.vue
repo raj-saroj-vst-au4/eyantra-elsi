@@ -21,7 +21,6 @@
           >
         </a>
         <hr />
-
         <ul class="mt-2 space-y-2 font-medium">
           <li>
             <NuxtLink
@@ -32,7 +31,6 @@
                 name="lucide:layout-dashboard"
                 class="size-4 text-muted-foreground text-white"
               />
-
               <span class="ms-3">Dashboard</span>
             </NuxtLink>
           </li>
