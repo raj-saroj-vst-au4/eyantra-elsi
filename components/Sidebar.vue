@@ -117,7 +117,24 @@
           <Icon name="lucide:user" class="size-7 text-muted-foreground text-white" />
           <div>
             <p class="text-sm font-semibold text-white" v-html="user?.providerInfo.name" />
-            <p class="text-xs text-muted-foreground text-white" v-html="user?.providerInfo.email" />
+            <UiHoverCard>
+              <UiHoverCardTrigger as-child>
+                <p
+                  v-if="user?.providerInfo.email"
+                  class="line-clamp-2 text-ellipsis text-muted-foreground"
+                >
+                  {{
+                    user?.providerInfo.email.substring(0, 20) +
+                    (user?.providerInfo.email.length > 20 ? "..." : "")
+                  }}
+                </p>
+              </UiHoverCardTrigger>
+              <UiHoverCardContent class="w-50 overflow-hidden rounded-lg p-2">
+                <div class="group relative flex h-full w-full flex-col justify-end overflow-hidden">
+                  <p class="mt-2 text-sm">{{ user?.providerInfo.email }}</p>
+                </div>
+              </UiHoverCardContent>
+            </UiHoverCard>
           </div>
         </div>
         <UiAlertDialog v-model:open="model">
