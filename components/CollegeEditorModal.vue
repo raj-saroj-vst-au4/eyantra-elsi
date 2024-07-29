@@ -264,6 +264,23 @@
                     v-model="data.address"
                   ></textarea>
                 </div>
+                <button
+                      @click="updateCollege(data.id, 'IS_eLSI',2)"
+                      class=" rounded border border-red-400 bg-red-400 p-2.5 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"
+                      :class="{ 'opacity-50 cursor-not-allowed': data.IS_eLSI==2  || data.IS_eLSI==1 || edit.updateElsi.value
+                    }"
+                    :disabled="data.IS_eLSI==2 || data.IS_eLSI==1 || edit.updateElsi.value ">
+                    <template v-if="data.IS_eLSI==1">
+                      <label class="opacity-50 cursor-not-allowed" >Elsi College </label>
+                    </template>
+                    <template v-else-if="data.IS_eLSI==2 || edit.updateElsi.value">
+                      <label class="opacity-50 cursor-not-allowed" >On Process</label>
+                    </template>
+                    <template v-else>
+                      <label>NON-Elsi College</label>
+                    </template>
+                    </button>
+
               </div>
             </div>
           </div>
@@ -288,6 +305,7 @@
       required: true,
     },
   });
+  
   const edit = reactive({
     college_name: {
       value: false,
@@ -313,6 +331,14 @@
       value: false,
       loading: false,
     },
+    IS_eLSI: {
+      value: false,
+      loading: false,
+    },
+    updateElsi: {
+      value: false,
+      loading: false,
+    },
   });
 
   const toggleEdit = (field) => {
@@ -328,7 +354,7 @@
     });
   };
   const updateCollege = async (clgid, field, updatedVal) => {
-    console.log(clgid, field, updatedVal);
+    
     try {
       edit[field].loading = true;
       if (clgid) {
@@ -341,9 +367,12 @@
           },
           body: JSON.stringify(bodyContent),
         });
-        console.log("backend response", res.college);
+        
         collegeStore.updateCollege(res.college);
         showMessage("success", "Updated", `${field} has been updated`);
+        if(field == 'IS_eLSI'){
+         toggleEdit('updateElsi');
+        }
       }
     } catch (e) {
       showMessage("destructive", "Error:", e);

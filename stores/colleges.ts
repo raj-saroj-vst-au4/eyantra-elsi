@@ -1,3 +1,5 @@
+import { get } from "@vueuse/core";
+import { set } from "date-fns";
 import { defineStore } from "pinia";
 
 export const useCollegesStore = defineStore("colleges", {
@@ -5,12 +7,15 @@ export const useCollegesStore = defineStore("colleges", {
     colleges: null,
     lastFetch: 0,
     fetchCount: 0,
+    selectedCollege: "",
   }),
   actions: {
     setColleges(data: any) {
       this.colleges = data;
       this.lastFetch = Date.now();
       this.fetchCount++;
+      this.selectedCollege = "";
+      this.collegeSelectedName = "";
     },
     updateCollege(updatedCollege: Object) {
       const index = this.colleges.findIndex((college) => college.id === updatedCollege.id);
@@ -35,9 +40,27 @@ export const useCollegesStore = defineStore("colleges", {
         }
       }
     },
+    setTONonelsiCollege(data: any, value: any) {
+      // this.colleges[0].IS_eLSI = 0;
+      const index = this.colleges.findIndex((college) => college.id == data);
+      this.colleges[index].IS_eLSI = value;
+     
+    },
+    setTOeLSICollege() {
+      
+      const index = this.colleges.findIndex((college) => college.id == this.selectedCollege);
+      
+      this.colleges[index].IS_eLSI = 1;
+    },
+    setSelectedCollege(data: any, clg: any) {
+      this.selectedCollege = data;
+      this.collegeSelectedName = clg;
+    }
   },
   getters: {
     getColleges: (state) => state.colleges,
     getFetchCount: (state) => state.fetchCount,
+    getSelectedCollege: (state) => state.selectedCollege,
+    getCollegeSelectedName: (state) => state.collegeSelectedName,
   },
 });
