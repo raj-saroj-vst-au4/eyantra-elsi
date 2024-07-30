@@ -58,16 +58,16 @@
 
       <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-4 py-3">Code</th>
-          <th scope="col" class="px-4 py-3">eLSI</th>
-          <th scope="col" class="px-4 py-3">College name</th>
-          <th scope="col" class="px-4 py-3">District</th>
-          <th scope="col" class="px-4 py-3">Pincode</th>
-          <th scope="col" class="px-4 py-3">LI Date</th>
-          <th scope="col" class="px-4 py-3">Registration</th>
-          <th scope="col" class="px-4 py-3">LOI</th>
-          <th scope="col" class="px-4 py-3">Payment</th>
-          <th scope="col" class="px-4 py-3">Action</th>
+          <th scope="col" class="px-2 py-3" @click="sort('clg_code')">Code</th>
+          <th scope="col" class="px-2 py-3">eLSI</th>
+          <th scope="col" class="px-2 py-3">College name</th>
+          <th scope="col" class="px-2 py-3">District</th>
+          <th scope="col" class="px-2 py-3">Pincode</th>
+          <th scope="col" class="px-2 py-3">LI Date</th>
+          <th scope="col" class="px-2 py-3">Registration</th>
+          <th scope="col" class="px-2 py-3">LOI</th>
+          <th scope="col" class="px-2 py-3">Payment</th>
+          <th scope="col" class="px-2 py-3">Action</th>
         </tr>
       </thead>
 
@@ -75,33 +75,41 @@
         <tr
           v-for="college in paginatedColleges"
           :key="college.id"
-          class="border-b bg-white dark:border-gray-700 dark:bg-gray-800"
+          class="bg-white dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
         >
           <th
             scope="row"
-            class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
+            class="items-center whitespace-nowrap px-3 font-medium text-gray-900 dark:text-white"
           >
             {{ college.clg_code }}
           </th>
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">
             <span
               class="me-3 flex h-3 w-3 rounded-full"
               :class="college.IS_eLSI ? 'bg-green-400' : 'bg-red-400'"
             ></span>
           </td>
-          <th
-            scope="row"
-            class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
-          >
+          <th scope="row" class="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            <NuxtLink :to="`/college/${college.clg_code}`"
+              ><Icon
+                name="lucide:square-arrow-out-up-right"
+                class="mr-3 size-4 text-muted-foreground text-white"
+            /></NuxtLink>
+            <!-- <button
+              type="button"
+              class="inline-flex items-center rounded-xl bg-gray-700 p-1 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              @click="redirectTo(`/college/${college.clg_code}`)"
+            >
+              <span class="sr-only">Icon</span>
+            </button> -->
             {{
               college.college_name.substring(0, 30) +
               (college.college_name.length > 30 ? "..." : "")
             }}
           </th>
-          <td class="px-4 py-3">{{ college.district }}</td>
-          <td class="px-4 py-3">{{ college.pincode }}</td>
-
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">{{ college.district }}</td>
+          <td class="px-2 py-2">{{ college.pincode }}</td>
+          <td class="px-2 py-2">
             <Icon
               v-if="
                 (!college.reg_data || !college.intent_letter || !college.pay_proof) &&
@@ -111,11 +119,11 @@
               class="mr-3 size-4 text-muted-foreground text-yellow-300"
             />{{ college.inauguration_date }}
           </td>
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">
             <button
               v-if="!college.reg_data"
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              class="rounded-full bg-gray-600 px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 xl:px-5"
               @click="triggerRegModal(college)"
             >
               <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
@@ -124,7 +132,7 @@
             <button
               v-else
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              class="rounded-full bg-gray-600 py-2 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 xl:px-5"
               @click="redirectTo(college.reg_data)"
             >
               View
@@ -134,11 +142,11 @@
               />
             </button>
           </td>
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">
             <button
               v-if="!college.intent_letter"
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              class="rounded-full bg-gray-600 px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 xl:px-5"
               @click="triggerLoiModal(college)"
             >
               <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
@@ -147,7 +155,7 @@
             <button
               v-else
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              class="rounded-full bg-gray-600 px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 xl:px-5"
               @click="redirectTo(college.intent_letter)"
             >
               View
@@ -157,11 +165,11 @@
               />
             </button>
           </td>
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">
             <button
               v-if="!college.pay_proof"
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              class="rounded-full bg-gray-600 px-3 py-2.5 text-sm font-medium text-red-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 xl:px-5"
               @click="triggerPaymentModal(college)"
             >
               <Icon name="lucide:file-up" class="mr-1 size-4 text-muted-foreground" />
@@ -170,7 +178,7 @@
             <button
               v-else
               type="button"
-              class="rounded-full bg-gray-600 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              class="rounded-full bg-gray-600 px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 xl:px-5"
               @click="redirectTo(college.pay_proof)"
             >
               Check
@@ -180,7 +188,7 @@
               />
             </button>
           </td>
-          <td class="px-4 py-3">
+          <td class="px-2 py-2">
             <button
               type="button"
               class="rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -270,6 +278,9 @@
   const showLoiModal = ref(false);
   const showPaymentModal = ref(false);
   const showCollegeEditorModal = ref(false);
+
+  const sortColumn = ref("");
+  const sortOrder = ref("asc");
   const triggerLoiModal = (clg) => {
     if (showLoiModal.value) {
       showLoiModal.value = false;
@@ -328,6 +339,21 @@
     });
   });
 
+  const sortedColleges = computed(() => {
+    return filteredColleges.value.sort((a, b) => {
+      if (sortColumn.value) {
+        let result = 0;
+        if (a[sortColumn.value] > b[sortColumn.value]) {
+          result = 1;
+        } else if (a[sortColumn.value] < b[sortColumn.value]) {
+          result = -1;
+        }
+        return sortOrder.value === "asc" ? result : -result;
+      }
+      return 0;
+    });
+  });
+
   const paginatedColleges = computed(() => {
     const startIndex = (currentPage.value - 1) * 10;
     const endIndex = startIndex + 10;
@@ -347,6 +373,15 @@
   const fetchColleges = async () => {
     await collegesStore.fetchColleges();
     isLoading.value = false;
+  };
+
+  const sort = (column) => {
+    if (sortColumn.value === column) {
+      sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.value = column;
+      sortOrder.value = "asc";
+    }
   };
 
   onBeforeMount(() => {

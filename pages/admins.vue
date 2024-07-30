@@ -144,7 +144,6 @@
   const users = ref([]);
   const isLoading = useState("isLoading");
   const authCode = ref();
-  const currentRole = ref();
 
   const fetchpage = async () => {
     isLoading.value = true;
