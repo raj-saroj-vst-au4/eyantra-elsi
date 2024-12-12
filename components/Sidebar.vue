@@ -84,11 +84,12 @@
               <Icon name="lucide:flame" class="size-4 text-muted-foreground text-white" />
 
               <span class="ms-3 flex-1 whitespace-nowrap">Lab Inaugration</span>
-              <NuxtLink to="/addlabslot">
+              <NuxtLink to="/checkCollegeForInauguration">
                 <button
                   type="button"
                   class="inline-flex items-center rounded-xl bg-gray-700 p-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                 >
+                
                   <Icon
                     name="lucide:calendar-plus"
                     class="size-4 text-muted-foreground text-white"

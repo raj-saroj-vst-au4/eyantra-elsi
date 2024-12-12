@@ -86,7 +86,11 @@
           <td class="px-2 py-2">
             <span
               class="me-3 flex h-3 w-3 rounded-full"
-              :class="college.IS_eLSI ? 'bg-green-400' : 'bg-red-400'"
+              :class="{
+                'bg-green-400': college.IS_eLSI==1,
+                'bg-red-400': college.IS_eLSI==0,
+                'bg-yellow-400': college.IS_eLSI ==2,
+              }"
             ></span>
           </td>
           <th scope="row" class="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -113,11 +117,12 @@
             <Icon
               v-if="
                 (!college.reg_data || !college.intent_letter || !college.pay_proof) &&
-                college.IS_eLSI
+                college.IS_eLSI == 1
               "
               name="lucide:circle-alert"
-              class="mr-3 size-4 text-muted-foreground text-yellow-300"
-            />{{ college.inauguration_date }}
+              class=" size-4 text-muted-foreground text-yellow-300"
+            />
+            {{ college.inauguration_date }}
           </td>
           <td class="px-2 py-2">
             <button
@@ -264,6 +269,7 @@
       :trigger="triggerEditorModal"
       :data="modalCollegeData"
     />
+    
   </div>
 </template>
 <script setup>
